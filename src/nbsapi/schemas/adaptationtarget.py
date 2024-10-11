@@ -5,7 +5,12 @@ from typing_extensions import Annotated
 class TargetBase(BaseModel):
     "A type of climate adaptation"
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        from_attributes=True,
+        json_schema_extra={
+            "examples": [{"type": "Pluvial flooding"}, {"type": "Drought"}]
+        },
+    )
 
     type: str
 
