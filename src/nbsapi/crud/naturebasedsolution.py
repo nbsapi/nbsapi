@@ -5,6 +5,7 @@ from geoalchemy2 import Geography, Geometry
 from geoalchemy2 import functions as geo_func
 from geoalchemy2.elements import WKTElement
 from sqlalchemy import cast, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload
 from sqlalchemy.sql import distinct
@@ -118,30 +119,37 @@ async def get_filtered_solutions(
 async def create_nature_based_solution(
     db_session: AsyncSession, solution: NatureBasedSolutionCreate
 ):
-    db_solution = NbsDBModel(
-        name=solution.name,
-        definition=solution.definition,
-        cobenefits=solution.cobenefits,
-        specificdetails=solution.specificdetails,
-        location=solution.location,
-    )
-    for adaptation in solution.adaptations:
-        target_id = adaptation.adaptation.id
-        value = adaptation.value
-        # Properly execute the select statement
-        result = await db_session.execute(
-            select(AdaptationTarget).where(AdaptationTarget.id == target_id)
+    try:
+        db_solution = NbsDBModel(
+            name=solution.name,
+            definition=solution.definition,
+            cobenefits=solution.cobenefits,
+            specificdetails=solution.specificdetails,
+            location=solution.location,
         )
-        target = result.scalars().first()
-        if not target:
-            raise HTTPException(
-                status_code=404,
-                detail=f"AdaptationTarget with id {target_id} not found",
+        for adaptation in solution.adaptations:
+            target_type = adaptation.adaptation.type
+            value = adaptation.value
+            # Properly execute the select statement
+            result = await db_session.execute(
+                select(AdaptationTarget).where(AdaptationTarget.target == target_type)
             )
-        association = Association(tg=target, value=value)
-        db_solution.solution_targets.append(association)
-        db_session.add(association)
-    db_session.add(db_solution)
-    await db_session.commit()
-    await db_session.refresh(db_solution)
+            target = result.scalars().first()
+            if not target:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"AdaptationTarget {target_type} not found",
+                )
+            association = Association(tg=target, value=value)
+            db_solution.solution_targets.append(association)
+            db_session.add(association)
+        db_session.add(db_solution)
+        await db_session.commit()
+        await db_session.refresh(db_solution)
+    except IntegrityError:
+        db_session.rollback()
+        raise HTTPException(
+            status_code=403,
+            detail=f"Solution '{solution.name}' already exists",
+        )
     return await build_nbs_schema_from_model(db_solution)
