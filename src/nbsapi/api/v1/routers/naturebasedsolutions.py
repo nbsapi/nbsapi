@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 
 from fastapi import APIRouter, Body, Depends, Query
 
+from nbsapi.api.dependencies.auth import validate_is_authenticated
 from nbsapi.api.dependencies.core import DBSessionDep
 from nbsapi.crud.naturebasedsolution import (
     create_nature_based_solution,
@@ -30,7 +31,10 @@ async def read_nature_based_solution(solution_id: int, db_session: DBSessionDep)
     return solution
 
 
-@router.post("/solutions", response_model=List[NatureBasedSolutionRead])
+@router.post(
+    "/solutions",
+    response_model=List[NatureBasedSolutionRead],
+)
 async def get_solutions(
     db_session: DBSessionDep,
     targets: Optional[List[AdaptationTargetRead]] = Body(
@@ -63,7 +67,11 @@ async def get_solutions(
     return solutions
 
 
-@router.post("/add_solution/", response_model=NatureBasedSolutionRead)
+@router.post(
+    "/add_solution/",
+    response_model=NatureBasedSolutionRead,
+    dependencies=[Depends(validate_is_authenticated)],
+)
 async def write_nature_based_solution(
     solution: NatureBasedSolutionCreate, db_session: DBSessionDep
 ):
