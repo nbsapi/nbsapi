@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from nbsapi.api.v1.routers.adaptationtargets import router as adaptations_router_v1
 from nbsapi.api.v1.routers.naturebasedsolutions import router as solutions_router_v1
+from nbsapi.api.v1.routers.users import router as users_router_v1
 from nbsapi.config import settings
 from nbsapi.database import sessionmanager
 
@@ -33,6 +34,7 @@ async def root():
 
 
 # Routers
+app.include_router(users_router_v1, prefix="/v1")
 app.include_router(solutions_router_v1, prefix="/v1")
 app.include_router(adaptations_router_v1, prefix="/v1")
 
