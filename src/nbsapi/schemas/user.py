@@ -6,12 +6,11 @@ class User(BaseModel):
 
     id: int
     username: str
-    slug: str
     email: str
     first_name: str
     last_name: str
-    is_superuser: bool = False
+    disabled: bool
+
 
 class UserPrivate(User):
     hashed_password: str
-
