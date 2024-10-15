@@ -3,8 +3,9 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
+from nbsapi.api.dependencies.auth import validate_is_authenticated
 from nbsapi.api.dependencies.core import DBSessionDep
-from nbsapi.crud.adaptationtarget import create_target, get_target, get_targets
+from nbsapi.crud.adaptationtarget import create_target, get_targets
 from nbsapi.schemas.adaptationtarget import TargetBase
 
 router = APIRouter(
@@ -21,7 +22,11 @@ async def read_targets(db_session: DBSessionDep):
     return targets
 
 
-@router.post("/target", response_model=TargetBase)
+@router.post(
+    "/target",
+    response_model=TargetBase,
+    dependencies=[Depends(validate_is_authenticated)],
+)
 async def write_target(db_session: DBSessionDep, itarget: TargetBase):
     """Create a new adaptation target"""
     wtarget = await create_target(db_session, itarget=itarget)
