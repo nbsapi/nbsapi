@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from nbsapi.api.v1.routers.adaptationtargets import router as adaptations_router_v1
 from nbsapi.api.v1.routers.naturebasedsolutions import router as solutions_router_v1
@@ -26,10 +27,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan, title=settings.project_name)
 
-
-@app.get("/")
-async def root():
-    return {"message": "Welcome to nbsapi"}
+app.mount("/", StaticFiles(directory="html", html=True), name="index")
 
 
 # Routers
