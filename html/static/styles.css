@@ -89,3 +89,10 @@ body {
     color: #556b50;
     font-size: 0.9rem;
 }
+
+.faq {
+    line-height: 2rem;
+}
+.faq h4 {
+    padding-top: 5px;
+}
