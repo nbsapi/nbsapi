@@ -13,7 +13,9 @@ from nbsapi.api.v1.routers.adaptationtargets import router as adaptations_router
 from nbsapi.api.v1.routers.naturebasedsolutions import router as solutions_router_v1
 from nbsapi.api.v1.routers.users import router as users_router_v1
 from nbsapi.config import settings
+from nbsapi.crud.apiversion import get_current_version
 from nbsapi.database import sessionmanager
+from nbsapi.schemas.apiversion import ApiVersion
 from nbsapi.utils.auth import create_access_token, is_authenticated
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -70,6 +72,13 @@ async def login_for_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return Token(access_token=access_token, token_type="bearer")
+
+
+@app.get("/currentversion", response_model=ApiVersion)
+async def get_current_api_version(db_session: DBSessionDep):
+    """Retrieve the current API version"""
+    cv = await get_current_version(db_session)
+    return cv
 
 
 # Routers
