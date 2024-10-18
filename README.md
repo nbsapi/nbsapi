@@ -34,8 +34,7 @@ SQL commands for creation of database and enabling the PostGIS are mentioned abo
     CREATE SCHEMA postgis;
     CREATE EXTENSION postgis SCHEMA postgis;
     CREATE USER nbsapi;
-    ALTER ROLE nbsapi WITH PASSWORD 'nbsapi';
-    ALTER ROLE nbsapi WITH PASSWORD 'nbsapi';        
+    ALTER ROLE nbsapi WITH PASSWORD 'nbsapi';   
     grant all privileges on database nbsapi to nbsapi;
 
     ```
