@@ -23,9 +23,7 @@ async def get_current_user(
         email = payload.get("sub")
         if email is None:
             raise credentials_exception
-        permissions = payload.get("permissions")
-        if permissions is None:
-            raise credentials_exception
+        permissions = payload.get("permissions", "")
         token_data = TokenData(email=email, permissions=permissions)
     except PyJWTError as e:
         raise credentials_exception
