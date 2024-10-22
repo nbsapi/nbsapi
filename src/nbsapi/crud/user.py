@@ -16,9 +16,11 @@ async def get_user(db_session: AsyncSession, user_id: int):
     return user
 
 
-async def get_user_by_email(db_session: AsyncSession, email: str):
+async def get_user_by_username(db_session: AsyncSession, username: str):
     return (
-        await db_session.scalars(select(UserDBModel).where(UserDBModel.email == email))
+        await db_session.scalars(
+            select(UserDBModel).where(UserDBModel.username == username)
+        )
     ).first()
 
 
