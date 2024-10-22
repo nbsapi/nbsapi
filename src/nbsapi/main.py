@@ -24,11 +24,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 # Load solutions from JSON fixture on startup
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # global solutions
-    # json_file_path = os.path.join(os.path.dirname(__file__), "solutions.json")
-    # with open(json_file_path, "r") as f:
-    #     solutions_data = json.load(f)
-    #     solutions = [NatureBasedSolution(**solution) for solution in solutions_data]
     yield
     if sessionmanager._engine is not None:
         # Close the DB connection
@@ -46,13 +41,6 @@ class Token(BaseModel):
 @app.get("/")
 async def root():
     return {"message": "Welcome to nbsapi"}
-
-
-# @router.get("/solutions/{solution_id}", response_model=NatureBasedSolutionRead)
-# async def read_nature_based_solution(solution_id: int, db_session: DBSessionDep):
-#     """Retrieve a nature-based solution using its ID"""
-#     solution = await get_solution(db_session, solution_id)
-#     return solution
 
 
 @app.post("/auth/token", response_model=Token)
