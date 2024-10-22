@@ -47,10 +47,10 @@ async def get_solutions(
         description="Bounding box specified as [west, south, east, north]. The list should contain exactly four float values. Max 1 sq km",
         examples=[
             [
-                -73.968,
-                40.781,
-                -73.962,
-                40.784,
+                -6.2757665,
+                53.332055,
+                -6.274319,
+                53.332553,
             ]
         ],
     ),
@@ -59,7 +59,7 @@ async def get_solutions(
     Return a list of nature-based solutions using _optional_ filter criteria:
 
     - `targets`: An array of one or more **adaptation targets** and their associated protection values. Solutions having targets with protection values **equal to or greater than** the specified values will be returned
-    - `bbox`: An array of 4 EPSG 4326 coordinates. Only solutions intersected by the bbox will be returned. It must be **<=** 1 km sq
+    - `bbox`: An array of 4 EPSG 4326 coordinates: `[xmin, ymin, xmax, ymax]` / `[west, south, east, north]` Only solutions intersected by the bbox will be returned. It must be **<=** 1 km sq
 
     """
     # TODO: add optional bounding box and polygon params when we have PostGIS and geometry column
