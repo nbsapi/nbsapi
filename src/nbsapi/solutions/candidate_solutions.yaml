@@ -1,0 +1,9 @@
+---
+  - name: River and Stream Renaturation
+    definition: Renaturation of existing streams and drainage lines in the city to slow down water flows.
+    specific_details: The riverbank is an interface of aquatic and terrestrial ecosystems, an area protecting cities from riverine floods and often an important social place with recreational and cultural value [Source](https://documents1.worldbank.org/curated/en/502101636360985715/pdf/A-Catalogue-of-Nature-based-Solutions-for-Urban-Resilience.pdf)
+    adaptation_target:
+      Pluvial flooding: 80
+    cobenefits: Supports infiltration
+    category: Flood mitigation
+    

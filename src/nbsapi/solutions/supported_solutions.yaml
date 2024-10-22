@@ -1,0 +1,19 @@
+---
+solutions_list:
+  - name: Shade Trees
+    definition: Trees provide shade, reducing urban heat.
+    specific_details: Planting trees helps to mitigate heat island effects in urban
+      areas.
+    adaptation_target:
+      Heat: 90
+    cobenefits: Improves air quality
+    category: Heat stress mitigation
+    
+  - name: Bioswales
+    definition: Bioswales capture and filter stormwater runoff.
+    specific_details: Bioswales are vegetated channels that slow and filter runoff.
+    adaptation_target:
+      Pluvial flooding: 80
+    cobenefits: Supports biodiversity
+    category: Flood mitigation
+    
