@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from geoalchemy2 import Geometry, WKBElement
-from sqlalchemy import Column, ForeignKey, Table
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from . import Base

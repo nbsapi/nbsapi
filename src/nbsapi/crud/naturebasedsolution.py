@@ -1,9 +1,8 @@
 from typing import List, Optional
 
 from fastapi import HTTPException
-from geoalchemy2 import Geography, Geometry
+from geoalchemy2 import Geography
 from geoalchemy2 import functions as geo_func
-from geoalchemy2.elements import WKTElement
 from sqlalchemy import cast, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession

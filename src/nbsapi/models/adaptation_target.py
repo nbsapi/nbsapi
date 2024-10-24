@@ -1,4 +1,3 @@
-from functools import wraps
 from typing import List
 
 from sqlalchemy.orm import (
@@ -6,8 +5,6 @@ from sqlalchemy.orm import (
     mapped_column,
     relationship,
 )
-
-from nbsapi.database import get_db_session
 
 from . import Base
 

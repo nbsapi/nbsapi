@@ -7,7 +7,7 @@
 Ensure that you have [`uv`](https://docs.astral.sh/uv/) installed.
 
 1. Clone the repo
-2. Inside the repo, create a new virtual env, `.venv`
+2. Inside the repo, create a new virtual env, `.venv`, if you use Conda / Anaconda you can create a environment there and activate it. 
 3. Activate it
 4. Run `uv sync` to install packages
 5. Run tests using `pytest .`
@@ -15,12 +15,29 @@ Ensure that you have [`uv`](https://docs.astral.sh/uv/) installed.
 7. The API is available on `http://127.0.0.1:8000` and docs at `http://127.0.0.1:8000/docs`
 
 ## Database
-We're using SQLAlchemy and [alembic](https://alembic.sqlalchemy.org/en/latest/).
+We're using SQLAlchemy and [alembic](https://alembic.sqlalchemy.org/en/latest/). To run the reference app, you will need PostgreSQL data base with the PostGIS extension installed e.g on [Ubuntu](https://postgis.net/documentation/getting_started/install_ubuntu/). 
 
 1. You'll need a Postgres database named `nbsapi`, with a user and password both set as `nbsapi`.
-2. Ensure that the `.env` file reflects your database settings.
+2. Ensure that the `.env` file reflects your database settings. A example [.env.sample](.env.sample) is provided
 3. Ensure that PostGIS is installed _for your database_: in a SQL console: `CREATE EXTENSION postgis;`
 4. Once that's set up, run `uv run alembic upgrade head` to migrate to the current state of the DB.
+
+## SQL Commands for reference
+
+SQL commands for creation of database and enabling the PostGIS are mentioned above are shown below: 
+
+    ``` sql
+
+    CREATE DATABASE nbsapi;
+    ALTER DATABASE nbsapi SET search_path=public,postgis,contrib;
+    \connect nbsapi;
+    CREATE SCHEMA postgis;
+    CREATE EXTENSION postgis SCHEMA postgis;
+    CREATE USER nbsapi;
+    ALTER ROLE nbsapi WITH PASSWORD 'nbsapi';   
+    grant all privileges on database nbsapi to nbsapi;
+
+    ```
 
 To run a migration:
 
