@@ -3,7 +3,7 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Body, Depends
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from nbsapi.api.dependencies.auth import validate_is_authenticated
 from nbsapi.api.dependencies.core import DBSessionDep
@@ -34,15 +34,19 @@ async def read_nature_based_solution(solution_id: int, db_session: DBSessionDep)
 
 # Define a schema for the request body
 class SolutionRequest(BaseModel):
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [{"bbox": [-6.2757665, 53.332055, -6.274319, 53.332553]}]
+        }
+    )
     targets: Optional[List[AdaptationTargetRead]] = (
         Body(None, description="List of adaptation targets to filter by"),
     )
     bbox: Optional[List[float]] = Field(
         None,
         description="Bounding box specified as [west, south, east, north]. The list should contain exactly four float values. Max 1 sq km",
-        min_items=4,
-        max_items=4,
-        example=[-6.2757665, 53.332055, -6.274319, 53.332553],
+        min_length=4,
+        max_length=4,
     )
 
     @model_validator(mode="before")
