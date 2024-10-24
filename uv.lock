@@ -254,7 +254,7 @@ requires-dist = [
     { name = "pydantic-settings", specifier = ">=2.5.2" },
     { name = "pyjwt", specifier = ">=2.9.0" },
     { name = "pytest", specifier = ">=8.3.3" },
-    { name = "python-multipart", specifier = ">=0.0.14" },
+    { name = "python-multipart", specifier = "==0.0.12" },
     { name = "shapely", specifier = ">=2.0.6" },
     { name = "sqlmodel", specifier = ">=0.0.22" },
     { name = "uvicorn", specifier = ">=0.32.0" },
@@ -433,11 +433,11 @@ wheels = [
 
 [[package]]
 name = "python-multipart"
-version = "0.0.14"
+version = "0.0.12"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/db/af/b63323ac939fce55c71f28adfaab8dcc9f38ae1c03ba13741ca490d325bf/python_multipart-0.0.14.tar.gz", hash = "sha256:b8e744731296767cb005e1e9bd7bb985a77aa077de5406dbe59b588559b6f350", size = 35823 }
+sdist = { url = "https://files.pythonhosted.org/packages/16/6e/7ecfe1366b9270f7f475c76fcfa28812493a6a1abd489b2433851a444f4f/python_multipart-0.0.12.tar.gz", hash = "sha256:045e1f98d719c1ce085ed7f7e1ef9d8ccc8c02ba02b5566d5f7521410ced58cb", size = 35713 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/98/42/dd53dd3fae856bf201aba9cb9501916652bd4426fc9ca9336764fda216b6/python_multipart-0.0.14-py3-none-any.whl", hash = "sha256:bf01aea0941cd1173a97b7c53d8b686acd2fa535549b13431d8515467dabb2b4", size = 23268 },
+    { url = "https://files.pythonhosted.org/packages/f5/0b/c316262244abea7481f95f1e91d7575f3dfcf6455d56d1ffe9839c582eb1/python_multipart-0.0.12-py3-none-any.whl", hash = "sha256:43dcf96cf65888a9cd3423544dd0d75ac10f7aa0c3c28a175bbcd00c9ce1aebf", size = 23246 },
 ]
 
 [[package]]

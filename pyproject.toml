@@ -32,7 +32,7 @@ dependencies = [
     "pydantic-settings>=2.5.2",
     "pyjwt>=2.9.0",
     "pytest>=8.3.3",
-    "python-multipart>=0.0.14",
+    "python-multipart==0.0.12",
     "shapely>=2.0.6",
     "sqlmodel>=0.0.22",
     "uvicorn>=0.32.0",
