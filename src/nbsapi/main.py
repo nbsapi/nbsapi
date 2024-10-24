@@ -41,7 +41,27 @@ Adaptation targets define and quantify the type of adaptation facilitated by a `
 Each NbS may have **one or more** adaptation targets.
 """
 
-app = FastAPI(lifespan=lifespan, title=settings.project_name, description=description)
+tags_metadata = [
+    {
+        "name": "users",
+        "description": "Operations with users. The **login** logic is also here.",
+    },
+    {
+        "name": "solutions",
+        "description": "Retrieve and create Nature-Based Solutions.",
+    },
+    {
+        "name": "targets",
+        "description": "Retrieve and create Adaptation Targets.",
+    },
+]
+
+app = FastAPI(
+    lifespan=lifespan,
+    title=settings.project_name,
+    description=description,
+    openapi_tags=tags_metadata,
+)
 
 app.mount("/", StaticFiles(directory="html", html=True), name="index")
 
@@ -51,7 +71,7 @@ class Token(BaseModel):
     token_type: str
 
 
-@app.post("/auth/token", response_model=Token)
+@app.post("/auth/token", response_model=Token, tags=["users"])
 async def login_for_access_token(
     db_session: DBSessionDep,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
