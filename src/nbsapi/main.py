@@ -51,7 +51,7 @@ tags_metadata = [
         "description": "Retrieve and create Nature-Based Solutions.",
     },
     {
-        "name": "targets",
+        "name": "adaptation targets",
         "description": "Retrieve and create Adaptation Targets.",
     },
 ]
