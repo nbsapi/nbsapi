@@ -31,7 +31,6 @@ dependencies = [
     "psycopg>=3.2.1",
     "pydantic-settings>=2.5.2",
     "pyjwt>=2.9.0",
-    "pyproj>=3.6.1",
     "pytest",
     "python-multipart>=0.0.12",
     "shapely>=2.0.6",
