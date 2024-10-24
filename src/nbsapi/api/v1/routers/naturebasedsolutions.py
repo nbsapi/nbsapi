@@ -3,7 +3,7 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Body, Depends
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, model_validator
 
 from nbsapi.api.dependencies.auth import validate_is_authenticated
 from nbsapi.api.dependencies.core import DBSessionDep
@@ -45,8 +45,7 @@ class SolutionRequest(BaseModel):
         example=[-6.2757665, 53.332055, -6.274319, 53.332553],
     )
 
-    # Perform custom validation within the Pydantic model using root_validator
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def check_bbox(cls, values):
         bbox = values.get("bbox")
         if bbox:
