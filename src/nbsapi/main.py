@@ -5,8 +5,12 @@ from typing import Annotated
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+
+from fastapi.staticfiles import StaticFiles
+
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
+
 
 from nbsapi.api.dependencies.core import DBSessionDep
 from nbsapi.api.v1.routers.adaptationtargets import router as adaptations_router_v1
@@ -32,15 +36,14 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan, title=settings.project_name)
 
+app.mount("/", StaticFiles(directory="html", html=True), name="index")
 
 class Token(BaseModel):
     access_token: str
     token_type: str
 
 
-@app.get("/")
-async def root():
-    return {"message": "Welcome to nbsapi"}
+
 
 
 @app.post("/auth/token", response_model=Token)
