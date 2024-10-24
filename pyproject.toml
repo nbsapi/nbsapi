@@ -35,7 +35,7 @@ dependencies = [
     "python-multipart>=0.0.14",
     "shapely>=2.0.6",
     "sqlmodel>=0.0.22",
-    "uvicorn",
+    "uvicorn>=0.32.0",
 ]
 
 [build-system]
