@@ -5,12 +5,9 @@ from typing import Annotated
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-
-from fastapi.staticfiles import StaticFiles
-
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-
 
 from nbsapi.api.dependencies.core import DBSessionDep
 from nbsapi.api.v1.routers.adaptationtargets import router as adaptations_router_v1
@@ -34,19 +31,47 @@ async def lifespan(app: FastAPI):
         await sessionmanager.close()
 
 
-app = FastAPI(lifespan=lifespan, title=settings.project_name)
+description = """
+## Nature-Based Solutions
+Solutions that are inspired and supported by nature, which are cost-effective, **simultaneously provide environmental, social and economic benefits** and **help build resilience**.  
+Such solutions bring more, and more diverse, nature and natural features and processes into cities, landscapes and seascapes, through **locally adapted, resource-efficient and systemic interventions**.
+
+## Adaptation Targets
+Adaptation targets define and quantify the type of adaptation facilitated by a `Nature-Based Solution`, each target having an associated value 0 - 100.  
+Each NbS may have **one or more** adaptation targets.
+"""
+
+tags_metadata = [
+    {
+        "name": "users",
+        "description": "Operations with users. The **login** logic is also here.",
+    },
+    {
+        "name": "solutions",
+        "description": "Retrieve and create Nature-Based Solutions.",
+    },
+    {
+        "name": "adaptation targets",
+        "description": "Retrieve and create Adaptation Targets.",
+    },
+]
+
+app = FastAPI(
+    lifespan=lifespan,
+    title=settings.project_name,
+    description=description,
+    openapi_tags=tags_metadata,
+)
 
 app.mount("/", StaticFiles(directory="html", html=True), name="index")
+
 
 class Token(BaseModel):
     access_token: str
     token_type: str
 
 
-
-
-
-@app.post("/auth/token", response_model=Token)
+@app.post("/auth/token", response_model=Token, tags=["users"])
 async def login_for_access_token(
     db_session: DBSessionDep,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],

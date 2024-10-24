@@ -16,7 +16,7 @@ class TargetBase(BaseModel):
 
 
 class AdaptationTargetRead(BaseModel):
-    "Adaptation targets are instances of `TargetBase` associated with a Nature-Based Solution, each target having an associated value 0 - 100"
+    "Adaptation targets define and quantify the type of adaptation facilitated by a Nature-based solution, each target having an associated value 0 - 100"
 
     model_config = ConfigDict(
         json_schema_extra={"examples": [{"adaptation": {"type": "Heat"}, "value": 80}]},
