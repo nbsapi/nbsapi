@@ -39,8 +39,8 @@ class SolutionRequest(BaseModel):
             "examples": [{"bbox": [-6.2757665, 53.332055, -6.274319, 53.332553]}]
         }
     )
-    targets: Optional[List[AdaptationTargetRead]] = (
-        Body(None, description="List of adaptation targets to filter by"),
+    targets: Optional[List["AdaptationTargetRead"]] = Body(
+        None, description="List of adaptation targets to filter by"
     )
     bbox: Optional[List[float]] = Field(
         None,
