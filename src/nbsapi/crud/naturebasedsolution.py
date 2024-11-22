@@ -12,6 +12,7 @@ from sqlalchemy.sql import distinct
 from nbsapi.models import AdaptationTarget, Association
 from nbsapi.models import NatureBasedSolution as NbsDBModel
 from nbsapi.schemas.adaptationtarget import TargetBase
+from nbsapi.schemas.impact import ImpactBase, ImpactRead
 from nbsapi.schemas.naturebasedsolution import (
     AdaptationTargetRead,
     NatureBasedSolutionCreate,
@@ -58,7 +59,19 @@ async def build_nbs_schema_from_model(db_solution: NbsDBModel):
             )
             for assoc in db_solution.solution_targets
         ],
+        impact=None,
     )
+    if db_solution.impact is not None:
+        solution_read.impact = (
+            ImpactRead(
+                impact=ImpactBase(
+                    description=db_solution.impact.description,
+                    magnitude=db_solution.impact.magnitude,
+                    intensity=db_solution.impact.intensity.intensity,
+                    unit=db_solution.impact.unit.unit,
+                )
+            ),
+        )
     return solution_read
 
 

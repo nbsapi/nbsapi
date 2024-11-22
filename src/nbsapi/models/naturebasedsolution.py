@@ -48,5 +48,5 @@ class NatureBasedSolution(Base):
 
     impact_id: Mapped[int] = mapped_column(ForeignKey("impact.id"), nullable=True)
     impact: Mapped["Impact"] = relationship(
-        back_populates="solution", single_parent=True
+        back_populates="solution", lazy="joined", single_parent=True
     )
