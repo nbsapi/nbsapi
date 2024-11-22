@@ -63,8 +63,6 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 
-app.mount("/", StaticFiles(directory="html", html=True), name="index")
-
 
 class Token(BaseModel):
     access_token: str
@@ -101,6 +99,8 @@ async def get_current_api_version(db_session: DBSessionDep):
 app.include_router(users_router_v1, prefix="/v1")
 app.include_router(solutions_router_v1, prefix="/v1")
 app.include_router(adaptations_router_v1, prefix="/v1")
+# ensure that the route below is added AFTER all other routes
+app.mount("/", StaticFiles(directory="html", html=True), name="index")
 
 
 origins = ["*"]
