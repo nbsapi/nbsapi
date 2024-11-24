@@ -36,7 +36,12 @@ async def read_nature_based_solution(solution_id: int, db_session: DBSessionDep)
 class SolutionRequest(BaseModel):
     model_config = ConfigDict(
         json_schema_extra={
-            "examples": [{"bbox": [-6.2757665, 53.332055, -6.274319, 53.332553]}]
+            "examples": [
+                {
+                    "bbox": [-6.2757665, 53.332055, -6.274319, 53.332553],
+                    "adaptation": {"type": "Heat", "value": 10},
+                }
+            ]
         }
     )
     targets: Optional[List["AdaptationTargetRead"]] = Body(
