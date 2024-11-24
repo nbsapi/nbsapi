@@ -82,7 +82,7 @@ class SolutionRequest(BaseModel):
 )
 async def get_solutions(
     db_session: DBSessionDep,
-    request_body: SolutionRequest = Body(None),
+    request_body: Optional[SolutionRequest] = Body(None),
 ):
     """
     Return a list of nature-based solutions using _optional_ filter criteria:
