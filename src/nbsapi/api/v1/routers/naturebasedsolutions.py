@@ -77,7 +77,7 @@ class SolutionRequest(BaseModel):
 )
 async def get_solutions(
     db_session: DBSessionDep,
-    request_body: SolutionRequest = Body(...),
+    request_body: SolutionRequest = Body(None),
 ):
     """
     Return a list of nature-based solutions using _optional_ filter criteria:
@@ -86,8 +86,8 @@ async def get_solutions(
     - `bbox`: An array of 4 EPSG 4326 coordinates: `[xmin, ymin, xmax, ymax]` / `[west, south, east, north]` Only solutions intersected by the bbox will be returned. It must be **<=** 1 km sq
 
     """
-    targets = request_body.targets
-    bbox = request_body.bbox
+    targets = request_body.targets if request_body else None
+    bbox = request_body.bbox if request_body else None
     solutions = await get_filtered_solutions(db_session, targets, bbox)
     return solutions
 
