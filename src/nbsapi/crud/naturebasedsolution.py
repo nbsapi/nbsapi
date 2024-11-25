@@ -66,7 +66,7 @@ async def build_nbs_schema_from_model(db_solution: NbsDBModel):
             ImpactRead(
                 impact=ImpactBase(
                     id=db_solution.impact.id,
-                    description=db_solution.impact.description,
+                    description=db_solution.impact.unit.description,
                     magnitude=db_solution.impact.magnitude,
                     intensity=db_solution.impact.intensity.intensity,
                     unit=db_solution.impact.unit.unit,

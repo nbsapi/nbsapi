@@ -10,7 +10,6 @@ from . import Base
 class Impact(Base):
     __tablename__ = "impact"
     id: Mapped[int] = mapped_column(primary_key=True)
-    description: Mapped[str] = mapped_column(index=True)
     magnitude: Mapped[float] = mapped_column(index=True, unique=False)
     intensity_id: Mapped[int] = mapped_column(ForeignKey("impact_intensity.id"))
     intensity: Mapped["ImpactIntensity"] = relationship(
