@@ -21,8 +21,8 @@ class NatureBasedSolutionCreate(NatureBasedSolutionBase):
         description="List of adaptation types and their corresponding values",
         examples=[
             [
-                {"adaptation": {"id": 1, "type": "Heat"}, "value": 10},
-                {"adaptation": {"id": 2, "type": "Pluvial Flooding"}, "value": 20},
+                {"adaptation": {"type": "Heat"}, "value": 10},
+                {"adaptation": {"type": "Pluvial Flooding"}, "value": 20},
             ]
         ],
     )
