@@ -2,20 +2,50 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated
 
 
+class ImpactIntensity(BaseModel):
+    "Impact intensity"
+
+    model_config = ConfigDict(
+        from_attributes=True, json_schema_extra={"examples": ["low", "medium", "high"]}
+    )
+    intensity: str
+
+
+class ImpactUnit(BaseModel):
+    "Impact unit of measure"
+
+    model_config = ConfigDict(
+        from_attributes=True,
+        json_schema_extra={
+            "examples": [
+                {"unit": "m2", "description": "shade"},
+                {"unit": "m3", "description": "water volume"},
+            ]
+        },
+    )
+    unit: str
+    description: str
+
+
 class ImpactBase(BaseModel):
     "NbS Impact"
 
     model_config = ConfigDict(
         from_attributes=True,
         json_schema_extra={
-            # "examples": [{"type": "Pluvial flooding"}, {"type": "Drought"}]
+            "examples": [
+                {
+                    "intensity": "low",
+                    "magnitude": 10,
+                    "unit": "m2",
+                    "description": "shade",
+                }
+            ]
         },
     )
-    id: int
-    description: str
     magnitude: float
-    intensity: str
-    unit: str
+    unit: ImpactUnit = Field()
+    intensity: ImpactIntensity = Field()
 
 
 class ImpactRead(BaseModel):

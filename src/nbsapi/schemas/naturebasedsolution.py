@@ -31,9 +31,9 @@ class NatureBasedSolutionCreate(NatureBasedSolutionBase):
         description="The adaptation impact",
         examples=[
             {
-                "magnitude": 10,
-                "intensity": "low",
-                "unit": "m2",
+                "magnitude": 10.5,
+                "unit": {"unit": "m2", "description": "shade"},
+                "intensity": {"intensity": "low"},
             }
         ],
     )

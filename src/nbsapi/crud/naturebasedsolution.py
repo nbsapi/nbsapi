@@ -71,11 +71,9 @@ async def build_nbs_schema_from_model(db_solution: NbsDBModel):
         solution_read.impact = (
             ImpactRead(
                 impact=ImpactBase(
-                    id=db_solution.impact.id,
-                    description=db_solution.impact.unit.description,
                     magnitude=db_solution.impact.magnitude,
-                    intensity=db_solution.impact.intensity.intensity,
-                    unit=db_solution.impact.unit.unit,
+                    intensity=db_solution.impact.intensity,
+                    unit=db_solution.impact.unit,
                 )
             ),
         )
@@ -166,11 +164,13 @@ async def create_nature_based_solution(
         intensity = solution.impact.intensity
         unit = solution.impact.unit
         db_intensity = await db_session.execute(
-            select(ImpactIntensity).where(ImpactIntensity.intensity == intensity)
+            select(ImpactIntensity).where(
+                ImpactIntensity.intensity == intensity.intensity
+            )
         )
         intensity_res = db_intensity.unique().scalar_one_or_none()
         db_unit = await db_session.execute(
-            select(ImpactUnit).where(ImpactUnit.unit == unit)
+            select(ImpactUnit).where(ImpactUnit.unit == unit.unit)
         )
         unit_res = db_unit.unique().scalar_one_or_none()
         if intensity_res and unit_res:
