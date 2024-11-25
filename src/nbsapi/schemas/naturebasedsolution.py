@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from nbsapi.schemas.adaptationtarget import (
     AdaptationTargetRead,
 )
-from nbsapi.schemas.impact import ImpactRead
+from nbsapi.schemas.impact import ImpactRead, NbsImpactCreate
 
 
 class NatureBasedSolutionBase(BaseModel):
@@ -25,6 +25,16 @@ class NatureBasedSolutionCreate(NatureBasedSolutionBase):
                 {"adaptation": {"type": "Heat"}, "value": 10},
                 {"adaptation": {"type": "Pluvial Flooding"}, "value": 20},
             ]
+        ],
+    )
+    impact: NbsImpactCreate = Field(
+        description="The adaptation impact",
+        examples=[
+            {
+                "magnitude": 10,
+                "intensity": "low",
+                "unit": "m2",
+            }
         ],
     )
 

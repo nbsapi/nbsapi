@@ -9,10 +9,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload
 from sqlalchemy.sql import distinct
 
-from nbsapi.models import AdaptationTarget, Association
+from nbsapi.models import (
+    AdaptationTarget,
+    Association,
+    Impact,
+    ImpactIntensity,
+    ImpactUnit,
+)
 from nbsapi.models import NatureBasedSolution as NbsDBModel
 from nbsapi.schemas.adaptationtarget import TargetBase
-from nbsapi.schemas.impact import ImpactBase, ImpactRead
+from nbsapi.schemas.impact import ImpactBase, ImpactRead, NbsImpactCreate
 from nbsapi.schemas.naturebasedsolution import (
     AdaptationTargetRead,
     NatureBasedSolutionCreate,
@@ -156,6 +162,27 @@ async def create_nature_based_solution(
             association = Association(tg=target, value=value)
             db_solution.solution_targets.append(association)
             db_session.add(association)
+        magnitude = solution.impact.magnitude
+        intensity = solution.impact.intensity
+        unit = solution.impact.unit
+        db_intensity = await db_session.execute(
+            select(ImpactIntensity).where(ImpactIntensity.intensity == intensity)
+        )
+        intensity_res = db_intensity.unique().scalar_one_or_none()
+        db_unit = await db_session.execute(
+            select(ImpactUnit).where(ImpactUnit.unit == unit)
+        )
+        unit_res = db_unit.unique().scalar_one_or_none()
+        if intensity_res and unit_res:
+            db_impact = Impact(
+                magnitude=magnitude, unit=unit_res, intensity=intensity_res
+            )
+            db_solution.impact = db_impact
+        else:
+            raise HTTPException(
+                status_code=404,
+                detail="Missing Impact",
+            )
         db_session.add(db_solution)
         await db_session.commit()
         await db_session.refresh(db_solution)
