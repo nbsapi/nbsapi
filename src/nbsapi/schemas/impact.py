@@ -11,7 +11,7 @@ class ImpactBase(BaseModel):
             # "examples": [{"type": "Pluvial flooding"}, {"type": "Drought"}]
         },
     )
-
+    id: int
     description: str
     magnitude: float
     intensity: str
