@@ -32,16 +32,6 @@ class ImpactBase(BaseModel):
 
     model_config = ConfigDict(
         from_attributes=True,
-        json_schema_extra={
-            "examples": [
-                {
-                    "intensity": "low",
-                    "magnitude": 10,
-                    "unit": "m2",
-                    "description": "shade",
-                }
-            ]
-        },
     )
     magnitude: float
     unit: ImpactUnit = Field()
