@@ -22,6 +22,7 @@ description = "An API for nature-based solutions"
 readme = "README.md"
 dependencies = [
     "alembic>=1.13.2",
+    "bcrypt>=4.2.1",
     "fastapi>=0.112.2",
     "geoalchemy2>=0.15.2",
     "geojson>=3.1.0",
