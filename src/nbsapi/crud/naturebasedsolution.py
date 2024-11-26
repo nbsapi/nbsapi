@@ -112,6 +112,7 @@ async def get_filtered_solutions(
     db_session: AsyncSession,
     targets: Optional[List[AdaptationTargetRead]],
     bbox: Optional[List[float]],
+    intensities: Optional[List[ImpactIntensity]],
 ):
     query = select(NbsDBModel)
     if bbox:
@@ -126,6 +127,8 @@ async def get_filtered_solutions(
         for cset in condition_sets:
             # dynamically add WHERE clauses from the generated CTEs
             query = query.where(NbsDBModel.id.in_(select(cset.c.nbs_id)))
+    if intensities:
+        query = query.where(ImpactIntensity.intensity._in(intensities))
 
     res = (await db_session.scalars(query)).unique()
     if res:

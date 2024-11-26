@@ -13,6 +13,7 @@ from nbsapi.crud.naturebasedsolution import (
     get_solution,
 )
 from nbsapi.schemas.adaptationtarget import AdaptationTargetRead
+from nbsapi.schemas.impact import ImpactBase, ImpactIntensity, ImpactUnit
 from nbsapi.schemas.naturebasedsolution import (
     NatureBasedSolutionCreate,
     NatureBasedSolutionRead,
@@ -40,12 +41,16 @@ class SolutionRequest(BaseModel):
                 {
                     "bbox": [-6.2757665, 53.332055, -6.274319, 53.332553],
                     "adaptation": {"type": "Heat", "value": 10},
+                    "intensity": ["low"],
                 }
             ]
         }
     )
     targets: Optional[List["AdaptationTargetRead"]] = Body(
         None, description="List of adaptation targets to filter by"
+    )
+    intensities: Optional[List["ImpactIntensity"]] = Body(
+        None, description="List of impact intensities to filter by"
     )
     bbox: Optional[List[float]] = Field(
         None,
@@ -89,11 +94,13 @@ async def get_solutions(
 
     - `targets`: An array of one or more **adaptation targets** and their associated protection values. Solutions having targets with protection values **equal to or greater than** the specified values will be returned
     - `bbox`: An array of 4 EPSG 4326 coordinates: `[xmin, ymin, xmax, ymax]` / `[west, south, east, north]` Only solutions intersected by the bbox will be returned. It must be **<=** 1 km sq
+    - `intensity`: An array of one or more **adaptation intensities**
 
     """
     targets = request_body.targets if request_body else None
     bbox = request_body.bbox if request_body else None
-    solutions = await get_filtered_solutions(db_session, targets, bbox)
+    intensities = request_body.intensities if request_body else None
+    solutions = await get_filtered_solutions(db_session, targets, bbox, intensities)
     return solutions
 
 
