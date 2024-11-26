@@ -13,7 +13,7 @@ from nbsapi.crud.naturebasedsolution import (
     get_solution,
 )
 from nbsapi.schemas.adaptationtarget import AdaptationTargetRead
-from nbsapi.schemas.impact import ImpactBase, ImpactIntensity, ImpactUnit
+from nbsapi.schemas.impact import ImpactIntensity
 from nbsapi.schemas.naturebasedsolution import (
     NatureBasedSolutionCreate,
     NatureBasedSolutionRead,

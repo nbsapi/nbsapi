@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from nbsapi.schemas.adaptationtarget import (
     AdaptationTargetRead,
 )
-from nbsapi.schemas.impact import ImpactBase, ImpactRead
+from nbsapi.schemas.impact import ImpactBase
 
 
 class NatureBasedSolutionBase(BaseModel):

@@ -18,7 +18,6 @@ from nbsapi.models import (
 )
 from nbsapi.models import NatureBasedSolution as NbsDBModel
 from nbsapi.schemas.adaptationtarget import TargetBase
-from nbsapi.schemas.impact import ImpactBase, ImpactRead
 from nbsapi.schemas.naturebasedsolution import (
     AdaptationTargetRead,
     NatureBasedSolutionCreate,
@@ -66,19 +65,7 @@ async def build_nbs_schema_from_model(db_solution: NbsDBModel):
             for assoc in db_solution.solution_targets
         ],
         impacts=db_solution.impacts,
-        # impacts=[
-        #     ImpactRead(
-        #         impact=ImpactBase(
-        #             magnitude=impact.magnitude,
-        #             intensity=impact.intensity,
-        #             unit=impact.unit,
-        #         )
-        #     )
-        #     for impact in db_solution.impacts
-        # ],
     )
-    # if db_solution.impacts is not None:
-    # solution_read.impacts =
     return solution_read
 
 
