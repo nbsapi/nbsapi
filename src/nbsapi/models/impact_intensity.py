@@ -14,5 +14,5 @@ class ImpactIntensity(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     intensity: Mapped[str] = mapped_column(index=True, unique=True)
     impacts: Mapped[List["Impact"]] = relationship(
-        back_populates="intensity", lazy="joined"
+        back_populates="intensity",
     )

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import List
+
 from geoalchemy2 import Geometry, WKBElement
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -27,7 +29,6 @@ class Association(Base):
 
 class NatureBasedSolution(Base):
     __tablename__ = "naturebasedsolution"
-    __table_args__ = (UniqueConstraint("impact_id"),)
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(index=True, unique=True)
     definition: Mapped[str] = mapped_column(index=True)
@@ -45,8 +46,10 @@ class NatureBasedSolution(Base):
         collection_class=list,
         cascade="all, delete-orphan",
     )
-
-    impact_id: Mapped[int] = mapped_column(ForeignKey("impact.id"), nullable=True)
-    impact: Mapped["Impact"] = relationship(
-        back_populates="solution", lazy="joined", single_parent=True
+    impacts = relationship(
+        "Impact",
+        back_populates="solution",
+        collection_class=list,
+        lazy="selectin",
+        cascade="all, delete-orphan",
     )

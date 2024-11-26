@@ -49,8 +49,8 @@ class ImpactRead(BaseModel):
     impact: ImpactBase
 
 
-class NbsImpactCreate(ImpactBase):
-    """Write an NbS impact, Requires magnitude, intensity, and unit"""
+# class NbsImpactCreate(ImpactBase):
+#     """Write an NbS impact, Requires magnitude, intensity, and unit"""
 
-    id: int | None = None
-    description: str | None = None
+#     id: int | None = None
+#     description: str | None = None

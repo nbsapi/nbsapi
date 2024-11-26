@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from nbsapi.schemas.adaptationtarget import (
     AdaptationTargetRead,
 )
-from nbsapi.schemas.impact import ImpactRead, NbsImpactCreate
+from nbsapi.schemas.impact import ImpactBase, ImpactRead
 
 
 class NatureBasedSolutionBase(BaseModel):
@@ -14,6 +14,17 @@ class NatureBasedSolutionBase(BaseModel):
     cobenefits: str = Field(..., examples=["Improved biodiversity"])
     specificdetails: str = Field(..., examples=["Detailed information"])
     location: str = Field(..., examples=["Coastal Area X"])
+    impacts: List[ImpactBase] = Field(
+        default_factory=list,
+        description="The adaptation impact",
+        examples=[
+            {
+                "magnitude": 10.5,
+                "unit": {"unit": "m2", "description": "shade"},
+                "intensity": {"intensity": "low"},
+            }
+        ],
+    )
 
 
 class NatureBasedSolutionCreate(NatureBasedSolutionBase):
@@ -25,16 +36,6 @@ class NatureBasedSolutionCreate(NatureBasedSolutionBase):
                 {"adaptation": {"type": "Heat"}, "value": 10},
                 {"adaptation": {"type": "Pluvial Flooding"}, "value": 20},
             ]
-        ],
-    )
-    impact: NbsImpactCreate = Field(
-        description="The adaptation impact",
-        examples=[
-            {
-                "magnitude": 10.5,
-                "unit": {"unit": "m2", "description": "shade"},
-                "intensity": {"intensity": "low"},
-            }
         ],
     )
 
@@ -66,7 +67,4 @@ class NatureBasedSolutionRead(NatureBasedSolutionBase):
         alias="solution_targets",
         description="List of AdaptationTarget and their corresponding values",
         default_factory=list,
-    )
-    impact: Optional[ImpactRead] = Field(
-        description="An impact and its corresponding magnitude",
     )

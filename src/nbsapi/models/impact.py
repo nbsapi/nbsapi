@@ -17,4 +17,9 @@ class Impact(Base):
     )
     unit_id: Mapped[int] = mapped_column(ForeignKey("impact_unit.id"))
     unit: Mapped["ImpactUnit"] = relationship(back_populates="impacts", lazy="joined")
-    solution: Mapped["NatureBasedSolution"] = relationship(back_populates="impact")
+    solution_id: Mapped[int] = mapped_column(
+        ForeignKey("naturebasedsolution.id"), nullable=False
+    )
+    solution: Mapped["NatureBasedSolution"] = relationship(
+        back_populates="impacts",
+    )
