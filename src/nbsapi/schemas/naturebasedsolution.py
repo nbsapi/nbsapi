@@ -18,11 +18,13 @@ class NatureBasedSolutionBase(BaseModel):
         default_factory=list,
         description="The adaptation impact",
         examples=[
-            {
-                "magnitude": 10.5,
-                "unit": {"unit": "m2", "description": "shade"},
-                "intensity": {"intensity": "low"},
-            }
+            [
+                {
+                    "magnitude": 10.5,
+                    "unit": {"unit": "m2", "description": "shade"},
+                    "intensity": {"intensity": "low"},
+                }
+            ]
         ],
     )
 
