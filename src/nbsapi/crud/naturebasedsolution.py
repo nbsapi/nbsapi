@@ -9,7 +9,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload
 from sqlalchemy.sql import distinct
 
-from nbsapi.models import AdaptationTarget, Association
+from nbsapi.models import (
+    AdaptationTarget,
+    Association,
+    Impact,
+    ImpactIntensity,
+    ImpactUnit,
+)
 from nbsapi.models import NatureBasedSolution as NbsDBModel
 from nbsapi.schemas.adaptationtarget import TargetBase
 from nbsapi.schemas.naturebasedsolution import (
@@ -58,6 +64,7 @@ async def build_nbs_schema_from_model(db_solution: NbsDBModel):
             )
             for assoc in db_solution.solution_targets
         ],
+        impacts=db_solution.impacts,
     )
     return solution_read
 
@@ -94,6 +101,7 @@ async def get_filtered_solutions(
     db_session: AsyncSession,
     targets: Optional[List[AdaptationTargetRead]],
     bbox: Optional[List[float]],
+    intensities: Optional[List[ImpactIntensity]],
 ):
     query = select(NbsDBModel)
     if bbox:
@@ -108,6 +116,8 @@ async def get_filtered_solutions(
         for cset in condition_sets:
             # dynamically add WHERE clauses from the generated CTEs
             query = query.where(NbsDBModel.id.in_(select(cset.c.nbs_id)))
+    if intensities:
+        query = query.where(ImpactIntensity.intensity._in(intensities))
 
     res = (await db_session.scalars(query)).unique()
     if res:
@@ -142,6 +152,33 @@ async def create_nature_based_solution(
             association = Association(tg=target, value=value)
             db_solution.solution_targets.append(association)
             db_session.add(association)
+        for impact in solution.impacts:
+            magnitude = impact.magnitude
+            intensity = impact.intensity
+            unit = impact.unit
+            db_intensity = await db_session.execute(
+                select(ImpactIntensity).where(
+                    ImpactIntensity.intensity == intensity.intensity
+                )
+            )
+            intensity_res = db_intensity.unique().scalar_one_or_none()
+            db_unit = await db_session.execute(
+                select(ImpactUnit).where(ImpactUnit.unit == unit.unit)
+            )
+            unit_res = db_unit.unique().scalar_one_or_none()
+            if intensity_res and unit_res:
+                db_impact = Impact(
+                    magnitude=magnitude,
+                    unit=unit_res,
+                    intensity=intensity_res,
+                    solution=db_solution,
+                )
+                db_session.add(db_impact)
+            else:
+                raise HTTPException(
+                    status_code=404,
+                    detail="Missing Impact",
+                )
         db_session.add(db_solution)
         await db_session.commit()
         await db_session.refresh(db_solution)

@@ -11,6 +11,7 @@ from pydantic import BaseModel
 
 from nbsapi.api.dependencies.core import DBSessionDep
 from nbsapi.api.v1.routers.adaptationtargets import router as adaptations_router_v1
+from nbsapi.api.v1.routers.impacts import router as impacts_router_v1
 from nbsapi.api.v1.routers.naturebasedsolutions import router as solutions_router_v1
 from nbsapi.api.v1.routers.users import router as users_router_v1
 from nbsapi.config import settings
@@ -39,6 +40,9 @@ Such solutions bring more, and more diverse, nature and natural features and pro
 ## Adaptation Targets
 Adaptation targets define and quantify the type of adaptation facilitated by a `Nature-Based Solution`, each target having an associated value 0 - 100.  
 Each NbS may have **one or more** adaptation targets.
+
+## Impacts
+These are the adaptation impacts of `Nature-Based Solution`s. An impact has a magnitude, an `ImpactIntensity`, and an associated `ImpactUnit`, which may describe e.g. area or volume.
 """
 
 tags_metadata = [
@@ -53,6 +57,10 @@ tags_metadata = [
     {
         "name": "adaptation targets",
         "description": "Retrieve and create Adaptation Targets.",
+    },
+    {
+        "name": "impacts",
+        "description": "Retrieve adaptation impacts.",
     },
 ]
 
@@ -99,6 +107,7 @@ async def get_current_api_version(db_session: DBSessionDep):
 app.include_router(users_router_v1, prefix="/v1")
 app.include_router(solutions_router_v1, prefix="/v1")
 app.include_router(adaptations_router_v1, prefix="/v1")
+app.include_router(impacts_router_v1, prefix="/v1")
 # ensure that the route below is added AFTER all other routes
 app.mount("/", StaticFiles(directory="html", html=True), name="index")
 

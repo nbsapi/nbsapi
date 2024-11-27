@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from nbsapi.schemas.adaptationtarget import (
     AdaptationTargetRead,
 )
+from nbsapi.schemas.impact import ImpactBase
 
 
 class NatureBasedSolutionBase(BaseModel):
@@ -13,6 +14,19 @@ class NatureBasedSolutionBase(BaseModel):
     cobenefits: str = Field(..., examples=["Improved biodiversity"])
     specificdetails: str = Field(..., examples=["Detailed information"])
     location: str = Field(..., examples=["Coastal Area X"])
+    impacts: List[ImpactBase] = Field(
+        default_factory=list,
+        description="The adaptation impact",
+        examples=[
+            [
+                {
+                    "magnitude": 10.5,
+                    "unit": {"unit": "m2", "description": "shade"},
+                    "intensity": {"intensity": "low"},
+                }
+            ]
+        ],
+    )
 
 
 class NatureBasedSolutionCreate(NatureBasedSolutionBase):
