@@ -7,7 +7,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 from nbsapi.api.dependencies.core import DBSessionDep
 from nbsapi.api.v1.routers.adaptationtargets import router as adaptations_router_v1
@@ -101,6 +101,12 @@ async def get_current_api_version(db_session: DBSessionDep):
     """Retrieve the current API version"""
     cv = await get_current_version(db_session)
     return cv
+
+
+@app.get("/contact", response_model=EmailStr)
+async def get_contact(db_session: DBSessionDep):
+    """Retrieve the contact address for this API"""
+    return "hrishi@geodesignhub.com"
 
 
 # Routers
