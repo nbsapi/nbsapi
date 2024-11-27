@@ -6,7 +6,8 @@ class ImpactIntensity(BaseModel):
     "Impact intensity"
 
     model_config = ConfigDict(
-        from_attributes=True, json_schema_extra={"examples": ["low", "medium", "high"]}
+        from_attributes=True,
+        json_schema_extra={"examples": [{"intensity": "low"}, {"intensity": "medium"}]},
     )
     intensity: str
 
