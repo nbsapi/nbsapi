@@ -42,7 +42,7 @@ Adaptation targets define and quantify the type of adaptation facilitated by a `
 Each NbS may have **one or more** adaptation targets.
 
 ## Impacts
-These are the adaptation impacts of `Nature-Based Solution`s
+These are the adaptation impacts of `Nature-Based Solution`s. An impact has a magnitude, an `ImpactIntensity`, and an associated `ImpactUnit`, which may describe e.g. area or volume.
 """
 
 tags_metadata = [
