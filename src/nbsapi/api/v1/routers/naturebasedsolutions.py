@@ -41,7 +41,7 @@ class SolutionRequest(BaseModel):
                 {
                     "bbox": [-6.2757665, 53.332055, -6.274319, 53.332553],
                     "adaptation": {"type": "Heat", "value": 10},
-                    "intensity": ["low"],
+                    "intensities": [{"intensity": "low"}],
                 }
             ]
         }

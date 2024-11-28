@@ -12,12 +12,17 @@ from sqlalchemy.sql import distinct
 from nbsapi.models import (
     AdaptationTarget,
     Association,
-    Impact,
-    ImpactIntensity,
     ImpactUnit,
+)
+from nbsapi.models import (
+    Impact as Imp,
+)
+from nbsapi.models import (
+    ImpactIntensity as ImpInt,
 )
 from nbsapi.models import NatureBasedSolution as NbsDBModel
 from nbsapi.schemas.adaptationtarget import TargetBase
+from nbsapi.schemas.impact import ImpactIntensity
 from nbsapi.schemas.naturebasedsolution import (
     AdaptationTargetRead,
     NatureBasedSolutionCreate,
@@ -117,8 +122,12 @@ async def get_filtered_solutions(
             # dynamically add WHERE clauses from the generated CTEs
             query = query.where(NbsDBModel.id.in_(select(cset.c.nbs_id)))
     if intensities:
-        query = query.where(ImpactIntensity.intensity._in(intensities))
-
+        # join solution -> intensity -> impact
+        query = query.join(Imp)
+        query = query.join(Imp.intensity)
+        query = query.where(
+            ImpInt.intensity.in_(impact.intensity for impact in intensities)
+        )
     res = (await db_session.scalars(query)).unique()
     if res:
         res = [await build_nbs_schema_from_model(model) for model in res]
