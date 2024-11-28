@@ -34,7 +34,7 @@ async def lifespan(app: FastAPI):
 
 description = """
 ## NBSAPI
-An API for interoperability between digital tools that help build and manage nature based solutions in the built and natural environment. This API is meant to tool builders to provide a way for them to share their data to interested parties in a standardized fashion. The API is fully configurable in that the tool builders customize the data sharing based on the capability of their service. 
+An API for interoperability between digital tools that help to build and manage nature-based solutions in the built and natural environment. This API provides a way for tool builders to share their data with interested parties in a standardized fashion. The API is fully configurable in that the tool builders customize the data sharing based on the capability of their service. 
 
 
 The API provides endpoints for these operations and in general we anticipate that the NbS tool / service owner will be using the POST endpoints to populate the service description and the clients will primarily use the GET endpoints to query and process the data. As the API grows, this pattern may change. 
@@ -44,9 +44,9 @@ The API also provides a way to authenticate and authorize via JWT tokens, it is 
 Definitions of some key concepts are below: 
 
 ### Nature Based Solutions
-Solutions that are inspired and supported by nature, which are cost-effective, **simultaneously provide environmental, social and economic benefits** and **help build resilience**.    
+Solutions that are inspired and supported by nature, which are cost-effective, **simultaneously provide environmental, social and economic benefits** and **help build resilience**.  
 Such solutions bring more, and more diverse, nature and natural features and processes into cities, landscapes and seascapes, through **locally adapted, resource-efficient and systemic interventions**.
-Your service handles and manages these solutions internally, the `solutions` endpoints provide a way for your to share your tool or service's capabilities via these endpoints.ou use the "Add solutions" endpoint once to publish your tool or services's capabilities.
+Your service handles and manages these solutions internally, the `solutions` endpoints provide a way for your to share your tool or service's capabilities via these endpoints. You use the "Add solutions" endpoint once to publish your tool or services's capabilities.
 
 ### Adaptation Targets
 Adaptation targets define and quantify the type of adaptation facilitated by a `Nature-Based Solution`, each target having an associated value 0 - 100.  
