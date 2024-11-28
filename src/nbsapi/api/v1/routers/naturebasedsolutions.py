@@ -1,9 +1,10 @@
 # from nbsapi.api.dependencies.auth import validate_is_authenticated
 
+import json
 from typing import List, Optional
 
-from fastapi import APIRouter, Body, Depends
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from fastapi import APIRouter, Body, Depends, HTTPException, Query
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
 from nbsapi.api.dependencies.auth import validate_is_authenticated
 from nbsapi.api.dependencies.core import DBSessionDep
@@ -33,74 +34,105 @@ async def read_nature_based_solution(solution_id: int, db_session: DBSessionDep)
     return solution
 
 
-# Define a schema for the request body
-class SolutionRequest(BaseModel):
-    model_config = ConfigDict(
-        json_schema_extra={
-            "examples": [
-                {
-                    "bbox": [-6.2757665, 53.332055, -6.274319, 53.332553],
-                    "adaptation": {"type": "Heat", "value": 10},
-                    "intensities": [{"intensity": "low"}],
-                }
-            ]
-        }
-    )
-    targets: Optional[List["AdaptationTargetRead"]] = Body(
-        None, description="List of adaptation targets to filter by"
-    )
-    intensities: Optional[List["ImpactIntensity"]] = Body(
-        None, description="List of impact intensities to filter by"
-    )
-    bbox: Optional[List[float]] = Field(
-        None,
-        description="Bounding box specified as [west, south, east, north]. The list should contain exactly four float values. Max 1 sq km",
-        min_length=4,
-        max_length=4,
-    )
-
-    @model_validator(mode="before")
-    def check_bbox(cls, values):
-        bbox = values.get("bbox")
-        if bbox:
-            if len(bbox) != 4:
-                raise ValueError(
-                    "Bounding box must contain exactly 4 float values: [west, south, east, north]"
-                )
-            west, south, east, north = bbox
-            # Validate the geographic ranges
-            if not (-180 <= west <= 180):
-                raise ValueError("West value must be between -180 and 180 degrees")
-            if not (-90 <= south <= 90):
-                raise ValueError("South value must be between -90 and 90 degrees")
-            if not (-180 <= east <= 180):
-                raise ValueError("East value must be between -180 and 180 degrees")
-            if not (-90 <= north <= 90):
-                raise ValueError("North value must be between -90 and 90 degrees")
-        return values
-
-
-# Route definition
-@router.post(
+@router.get(
     "/solutions",
     response_model=List[NatureBasedSolutionRead],
 )
 async def get_solutions(
     db_session: DBSessionDep,
-    request_body: Optional[SolutionRequest] = Body(None),
+    targets: Optional[str] = Query(
+        None,
+        description=(
+            "JSON string representing a list of adaptation targets to filter by. "
+            'Example: `[{"adaptation": {"type": "Heat"}, "value": 80}]`'
+        ),
+    ),
+    intensities: Optional[str] = Query(
+        None,
+        description=(
+            "JSON string representing a list of impact intensities to filter by. "
+            'Example: `[{"intensity":"low"}]`'
+        ),
+    ),
+    bbox: Optional[List[float]] = Query(
+        None,
+        description=(
+            "Bounding box specified as `[west, south, east, north]`. "
+            "Example: `[-6.2757665, 53.332055, -6.274319, 53.332553]`. Must cover a max area of 1 sq km."
+        ),
+    ),
 ):
     """
     Return a list of nature-based solutions using _optional_ filter criteria:
 
-    - `targets`: An array of one or more **adaptation targets** and their associated protection values. Solutions having targets with protection values **equal to or greater than** the specified values will be returned
-    - `bbox`: An array of 4 EPSG 4326 coordinates: `[xmin, ymin, xmax, ymax]` / `[west, south, east, north]` Only solutions intersected by the bbox will be returned. It must be **<=** 1 km sq
-    - `intensity`: An array of one or more **adaptation intensities**
-
+    - `targets`: A JSON string representing an array of one or more **adaptation targets**.
+    - `bbox`: An array of 4 EPSG 4326 coordinates. Only solutions intersected by the bbox will be returned. It must be **<=** 1 km sq.
+    - `intensities`: A JSON string representing an array of one or more **impact intensities**.
     """
-    targets = request_body.targets if request_body else None
-    bbox = request_body.bbox if request_body else None
-    intensities = request_body.intensities if request_body else None
-    solutions = await get_filtered_solutions(db_session, targets, bbox, intensities)
+    # Parse and validate `targets`
+    parsed_targets = None
+    if targets:
+        try:
+            target_list = json.loads(targets)  # Parse the JSON string
+            if not isinstance(target_list, list):
+                raise ValueError("`targets` must be a JSON array.")
+            parsed_targets = [
+                AdaptationTargetRead(**item) for item in target_list
+            ]  # Validate using Pydantic
+        except (json.JSONDecodeError, ValidationError, TypeError, ValueError) as e:
+            raise HTTPException(
+                status_code=400, detail=f"Invalid targets format: {str(e)}"
+            )
+
+    # Parse and validate `intensities`
+    parsed_intensities = None
+    if intensities:
+        try:
+            intensity_list = json.loads(intensities)  # Parse the JSON string
+            if not isinstance(intensity_list, list):
+                raise ValueError("`intensities` must be a JSON array.")
+            parsed_intensities = [
+                ImpactIntensity(**item) for item in intensity_list
+            ]  # Validate using Pydantic
+        except (json.JSONDecodeError, ValidationError, TypeError, ValueError) as e:
+            raise HTTPException(
+                status_code=400, detail=f"Invalid intensities format: {str(e)}"
+            )
+        print(parsed_intensities)
+
+    # Validate bbox
+    if bbox:
+        if len(bbox) != 4:
+            raise HTTPException(
+                status_code=400,
+                detail="Bounding box must contain exactly 4 float values.",
+            )
+        west, south, east, north = bbox
+        if not (-180 <= west <= 180):
+            raise HTTPException(
+                status_code=400,
+                detail="West value must be between -180 and 180 degrees.",
+            )
+        if not (-90 <= south <= 90):
+            raise HTTPException(
+                status_code=400,
+                detail="South value must be between -90 and 90 degrees.",
+            )
+        if not (-180 <= east <= 180):
+            raise HTTPException(
+                status_code=400,
+                detail="East value must be between -180 and 180 degrees.",
+            )
+        if not (-90 <= north <= 90):
+            raise HTTPException(
+                status_code=400,
+                detail="North value must be between -90 and 90 degrees.",
+            )
+
+    # Fetch solutions using validated inputs
+    solutions = await get_filtered_solutions(
+        db_session, parsed_targets, bbox, parsed_intensities
+    )
     return solutions
 
 
