@@ -22,6 +22,8 @@ description = "An API for nature-based solutions"
 readme = "README.md"
 dependencies = [
     "alembic>=1.13.2",
+    "bcrypt>=4.2.1",
+    "email-validator>=2.2.0",
     "fastapi>=0.112.2",
     "geoalchemy2>=0.15.2",
     "geojson>=3.1.0",
@@ -31,17 +33,21 @@ dependencies = [
     "psycopg>=3.2.1",
     "pydantic-settings>=2.5.2",
     "pyjwt>=2.9.0",
-    "pyproj>=3.6.1",
-    "pytest",
-    "python-multipart>=0.0.12",
+    "pytest>=8.3.3",
+    "python-multipart==0.0.12",
     "shapely>=2.0.6",
     "sqlmodel>=0.0.22",
-    "uvicorn",
+    "uvicorn>=0.32.0",
 ]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/nbsapi"]

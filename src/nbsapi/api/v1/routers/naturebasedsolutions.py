@@ -3,7 +3,7 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Body, Depends
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from nbsapi.api.dependencies.auth import validate_is_authenticated
 from nbsapi.api.dependencies.core import DBSessionDep
@@ -13,6 +13,7 @@ from nbsapi.crud.naturebasedsolution import (
     get_solution,
 )
 from nbsapi.schemas.adaptationtarget import AdaptationTargetRead
+from nbsapi.schemas.impact import ImpactIntensity
 from nbsapi.schemas.naturebasedsolution import (
     NatureBasedSolutionCreate,
     NatureBasedSolutionRead,
@@ -34,19 +35,31 @@ async def read_nature_based_solution(solution_id: int, db_session: DBSessionDep)
 
 # Define a schema for the request body
 class SolutionRequest(BaseModel):
-    targets: Optional[List[AdaptationTargetRead]] = (
-        Body(None, description="List of adaptation targets to filter by"),
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "bbox": [-6.2757665, 53.332055, -6.274319, 53.332553],
+                    "adaptation": {"type": "Heat", "value": 10},
+                    "intensities": [{"intensity": "low"}],
+                }
+            ]
+        }
+    )
+    targets: Optional[List["AdaptationTargetRead"]] = Body(
+        None, description="List of adaptation targets to filter by"
+    )
+    intensities: Optional[List["ImpactIntensity"]] = Body(
+        None, description="List of impact intensities to filter by"
     )
     bbox: Optional[List[float]] = Field(
         None,
         description="Bounding box specified as [west, south, east, north]. The list should contain exactly four float values. Max 1 sq km",
-        min_items=4,
-        max_items=4,
-        example=[-6.2757665, 53.332055, -6.274319, 53.332553],
+        min_length=4,
+        max_length=4,
     )
 
-    # Perform custom validation within the Pydantic model using root_validator
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def check_bbox(cls, values):
         bbox = values.get("bbox")
         if bbox:
@@ -74,18 +87,20 @@ class SolutionRequest(BaseModel):
 )
 async def get_solutions(
     db_session: DBSessionDep,
-    request_body: SolutionRequest = Body(...),
+    request_body: Optional[SolutionRequest] = Body(None),
 ):
     """
     Return a list of nature-based solutions using _optional_ filter criteria:
 
     - `targets`: An array of one or more **adaptation targets** and their associated protection values. Solutions having targets with protection values **equal to or greater than** the specified values will be returned
     - `bbox`: An array of 4 EPSG 4326 coordinates: `[xmin, ymin, xmax, ymax]` / `[west, south, east, north]` Only solutions intersected by the bbox will be returned. It must be **<=** 1 km sq
+    - `intensity`: An array of one or more **adaptation intensities**
 
     """
-    targets = request_body.targets
-    bbox = request_body.bbox
-    solutions = await get_filtered_solutions(db_session, targets, bbox)
+    targets = request_body.targets if request_body else None
+    bbox = request_body.bbox if request_body else None
+    intensities = request_body.intensities if request_body else None
+    solutions = await get_filtered_solutions(db_session, targets, bbox, intensities)
     return solutions
 
 

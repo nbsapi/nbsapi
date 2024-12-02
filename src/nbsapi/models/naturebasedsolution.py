@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from typing import List
+
 from geoalchemy2 import Geometry, WKBElement
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from . import Base
@@ -42,5 +44,12 @@ class NatureBasedSolution(Base):
         back_populates="solution",
         lazy="joined",
         collection_class=list,
+        cascade="all, delete-orphan",
+    )
+    impacts = relationship(
+        "Impact",
+        back_populates="solution",
+        collection_class=list,
+        lazy="selectin",
         cascade="all, delete-orphan",
     )
