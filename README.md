@@ -14,6 +14,13 @@ Ensure that you have [`uv`](https://docs.astral.sh/uv/) installed.
 6. You can now run the FastAPI server using `uv run python src/nbsapi/main.py`
 7. The API is available on `http://127.0.0.1:8000` and docs at `http://127.0.0.1:8000/docs`
 
+## Updating the API
+If you make changes to the API's public endpoints you must re-generate the API conformance verification tests:
+
+1. run `uv run test_generator/test_generator.py --spec openapi.json` from the repo root, where `openapi.json` is the generated OpenAPI spec
+2. Copy the generated Tavern YAML tests (located in `conformance/` by default) into the `nbsapi_verify` repo, to the path `src/nbsapi_verify/tests/`
+3. Cut a new release of `nbsapi`, then tag and publish a new release of `nbs_verify` to PyPI (Github Actions will auto-publish when a new tag is pushed). The API and the conformance testing tool are now in sync.
+
 ## Database
 We're using SQLAlchemy and [alembic](https://alembic.sqlalchemy.org/en/latest/). To run the reference app, you will need PostgreSQL data base with the PostGIS extension installed e.g on [Ubuntu](https://postgis.net/documentation/getting_started/install_ubuntu/). 
 

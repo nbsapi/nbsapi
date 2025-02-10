@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# nbsapi conformance generated YAML tests
+conformance/
+
 # Distribution / packaging
 .Python
 build/
