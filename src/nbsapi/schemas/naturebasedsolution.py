@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from nbsapi.schemas.adaptationtarget import (
@@ -14,7 +12,7 @@ class NatureBasedSolutionBase(BaseModel):
     cobenefits: str = Field(..., examples=["Improved biodiversity"])
     specificdetails: str = Field(..., examples=["Detailed information"])
     location: str = Field(..., examples=["Coastal Area X"])
-    impacts: List[ImpactBase] = Field(
+    impacts: list[ImpactBase] = Field(
         default_factory=list,
         description="The adaptation impact",
         examples=[
@@ -30,7 +28,7 @@ class NatureBasedSolutionBase(BaseModel):
 
 
 class NatureBasedSolutionCreate(NatureBasedSolutionBase):
-    adaptations: List[AdaptationTargetRead] = Field(
+    adaptations: list[AdaptationTargetRead] = Field(
         default_factory=list,
         description="List of adaptation types and their corresponding values",
         examples=[
@@ -43,14 +41,12 @@ class NatureBasedSolutionCreate(NatureBasedSolutionBase):
 
 
 class NatureBasedSolutionUpdate(BaseModel):
-    name: Optional[str] = Field(None, examples=["Riprap"])
-    definition: Optional[str] = Field(None, examples=["Updated definition"])
-    cobenefits: Optional[str] = Field(None, examples=["Enhanced ecosystem services"])
-    specificdetails: Optional[str] = Field(
-        None, examples=["Updated detailed information"]
-    )
-    location: Optional[str] = Field(None, examples=["Updated Coastal Area Y"])
-    adaptations: Optional[List[AdaptationTargetRead]] = Field(
+    name: str | None = Field(None, examples=["Riprap"])
+    definition: str | None = Field(None, examples=["Updated definition"])
+    cobenefits: str | None = Field(None, examples=["Enhanced ecosystem services"])
+    specificdetails: str | None = Field(None, examples=["Updated detailed information"])
+    location: str | None = Field(None, examples=["Updated Coastal Area Y"])
+    adaptations: list[AdaptationTargetRead] | None = Field(
         None,
         description="List of adaptation types and their corresponding values",
         examples=[
@@ -65,7 +61,7 @@ class NatureBasedSolutionUpdate(BaseModel):
 class NatureBasedSolutionRead(NatureBasedSolutionBase):
     model_config = ConfigDict(from_attributes=True, populate_by_name=True)
     id: int
-    adaptations: List[AdaptationTargetRead] = Field(
+    adaptations: list[AdaptationTargetRead] = Field(
         alias="solution_targets",
         description="List of AdaptationTarget and their corresponding values",
         default_factory=list,

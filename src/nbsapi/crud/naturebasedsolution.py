@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from fastapi import HTTPException
 from geoalchemy2 import Geography
 from geoalchemy2 import functions as geo_func
@@ -31,7 +29,7 @@ from nbsapi.schemas.naturebasedsolution import (
 
 
 async def get_intersecting_geometries(
-    db_session: AsyncSession, bbox: Optional[List[float]]
+    db_session: AsyncSession, bbox: list[float] | None
 ):
     MAX_BBOX_AREA = 1_000_000.0
     polygon_geom = geo_func.ST_MakeEnvelope(bbox[0], bbox[1], bbox[2], bbox[3], 4326)
@@ -104,9 +102,9 @@ def build_cte(target, assoc_alias, target_alias):
 
 async def get_filtered_solutions(
     db_session: AsyncSession,
-    targets: Optional[List[AdaptationTargetRead]],
-    bbox: Optional[List[float]],
-    intensities: Optional[List[ImpactIntensity]],
+    targets: list[AdaptationTargetRead] | None,
+    bbox: list[float] | None,
+    intensities: list[ImpactIntensity] | None,
 ):
     query = select(NbsDBModel)
     if bbox:
@@ -176,7 +174,7 @@ async def create_nature_based_solution(
             )
             unit_res = db_unit.unique().scalar_one_or_none()
             if intensity_res and unit_res:
-                db_impact = Impact(
+                db_impact = Imp(
                     magnitude=magnitude,
                     unit=unit_res,
                     intensity=intensity_res,
