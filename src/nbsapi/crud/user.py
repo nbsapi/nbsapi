@@ -31,5 +31,5 @@ async def make_user(db_session: AsyncSession, newuser: UserWrite):
         )
     ).first()
     if db_user:
-        raise HTTPException(status_code=400, detail="Username already registered")
+        raise HTTPException(status_code=400, detail="Could not create user")
     return await create_user(db_session=db_session, user=newuser)

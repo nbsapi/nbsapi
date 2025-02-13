@@ -192,7 +192,7 @@ async def create_nature_based_solution(
     except IntegrityError:
         db_session.rollback()
         raise HTTPException(
-            status_code=403,
+            status_code=409,
             detail=f"Solution '{solution.name}' already exists",
         )
     return await build_nbs_schema_from_model(db_solution)

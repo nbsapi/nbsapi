@@ -52,7 +52,10 @@ async def create_impact_intensity(
         await db_session.refresh(db_target)
     except IntegrityError:
         db_session.rollback()
-        raise HTTPException(status_code=403, detail="Intensity already exists")
+        raise HTTPException(
+            status_code=409,
+            detail=f"Intensity '{i_intensity.intensity}' already exists",
+        )
     return i_intensity
 
 
@@ -65,5 +68,7 @@ async def create_impact_unit(db_session: AsyncSession, i_unit: ImpactUnit):
         await db_session.refresh(db_target)
     except IntegrityError:
         db_session.rollback()
-        raise HTTPException(status_code=403, detail="Unit already exists")
+        raise HTTPException(
+            status_code=409, detail=f"Unit '{i_unit.unit}' already exists"
+        )
     return i_unit
