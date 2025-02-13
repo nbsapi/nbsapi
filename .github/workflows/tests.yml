@@ -3,42 +3,41 @@ name: Build wheel, release and publish on new tag
 on: [push, pull_request]
 
 jobs:
-  build:
-
+  build_and_test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.12]
-
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Optional, use if you use setuptools_scm
-        submodules: false  # Optional, use if you have submodules
-      name: Check out repo
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install wheel
-        pip install .[test] --use-pep517
-    - name: Test with pytest
-      run: |
-        pytest
-    - name: Build wheel
-      run: |
-        python -m pip install --upgrade pip
-        pip wheel . -w dist --no-deps --use-pep517
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Optional, use if you use setuptools_scm
+          submodules: true  # Optional, use if you have submodules
 
-    - uses: actions/upload-artifact@v4
-      name: Upload wheel as artifact
-      with:
-        name: wheels
-        path: |
-          ./dist/*.whl
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Enable cache, bust if lockfile changes
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up specified Python
+        run: uv python install
+          
+      - name: Install the project
+        run: uv sync --all-extras --dev
+
+      - name: Run tests
+        run: uv run pytest tests
+
+      - name: Build wheel
+        run: uv build --no-sources --wheel  -o dist
+
+      - name: Upload wheel as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels
+          path: |
+            ./dist/*.whl
 
   make_sdist:
     name: Make SDist
@@ -49,8 +48,11 @@ jobs:
         fetch-depth: 0  # Optional, use if you use setuptools_scm
         submodules: true  # Optional, use if you have submodules
 
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+
     - name: Build SDist
-      run: pipx run build --sdist
+      run: uv build --no-sources --sdist -o dist
 
     - uses: actions/upload-artifact@v4
       with:
@@ -59,7 +61,7 @@ jobs:
   release_artifacts:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     name: Release repaired and tested wheels
-    needs: build
+    needs: build_and_test
     runs-on: ubuntu-latest
     environment: release
     permissions:
