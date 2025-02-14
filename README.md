@@ -14,6 +14,8 @@ Ensure that you have [`uv`](https://docs.astral.sh/uv/) installed.
 6. You can now run the FastAPI server using `uv run python src/nbsapi/main.py`
 7. The API is available on `http://127.0.0.1:8000` and docs at `http://127.0.0.1:8000/docs`
 
+If you would like to test your implementation of the API, you can run `python test_generator/test_generator.py --help` from the repo root.
+
 ## Database
 We're using SQLAlchemy and [alembic](https://alembic.sqlalchemy.org/en/latest/). To run the reference app, you will need PostgreSQL data base with the PostGIS extension installed e.g on [Ubuntu](https://postgis.net/documentation/getting_started/install_ubuntu/). 
 

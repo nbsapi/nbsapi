@@ -23,6 +23,7 @@ readme = "README.md"
 dependencies = [
     "alembic>=1.13.2",
     "bcrypt>=4.2.1",
+    "click>=8.1.7",
     "email-validator>=2.2.0",
     "fastapi>=0.115.8",
     "geoalchemy2>=0.15.2",
@@ -33,11 +34,15 @@ dependencies = [
     "psycopg>=3.2.1",
     "pydantic-settings>=2.5.2",
     "pyjwt>=2.9.0",
-    "pytest>=8.3.3",
     "python-multipart==0.0.18",
     "shapely>=2.0.6",
     "sqlmodel>=0.0.22",
     "uvicorn>=0.32.0",
+]
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "tavern>=2.11.0",
 ]
 
 [build-system]
@@ -47,6 +52,16 @@ build-backend = "hatchling.build"
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
+    "--tavern-global-cfg=tests/common.yaml",
+    "--tb=short"
+]
+markers = [
+    "auth: marks tests that require authentication",
+    "public: marks tests that don't require authentication"
+]
+filterwarnings = [
+    "ignore:cannot collect test class 'TestType' because it has a __init__ constructor",
+    "ignore:Can't validate argument 'spatial_index'; can't locate any SQLAlchemy dialect named 'spatial'"
 ]
 
 [tool.hatch.build.targets.wheel]
