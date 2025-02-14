@@ -34,7 +34,7 @@ async def create_user(db_session: AsyncSession, user: UserWrite):
         last_name=user.last_name,
         email=user.email,
         hashed_password=hashed_password,
-        disabled=user.disabled,
+        disabled=False,
     )
     db_session.add(db_user)
     await db_session.commit()
