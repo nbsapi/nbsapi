@@ -1,8 +1,10 @@
 from datetime import UTC, datetime, timedelta
 
+import bcrypt
 import jwt
 from fastapi.security import OAuth2PasswordBearer
-from passlib.context import CryptContext
+
+# from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,18 +14,23 @@ from nbsapi.schemas.user import UserWrite
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 ACCESS_TOKEN_SECRET_KEY = settings.oauth_token_secret
 ACCESS_TOKEN_ALGORITHM = "HS256"
 
 
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    return bcrypt.hashpw(
+        bytes(password, encoding="utf-8"),
+        bcrypt.gensalt(),
+    )
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    return bcrypt.checkpw(
+        bytes(plain_password, encoding="utf-8"),
+        bytes(hashed_password, encoding="utf-8"),
+    )
 
 
 async def create_user(db_session: AsyncSession, user: UserWrite):
