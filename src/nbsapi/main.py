@@ -7,7 +7,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, 
+from pydantic import BaseModel
 
 from nbsapi.api.dependencies.core import DBSessionDep
 from nbsapi.api.v1.routers.adaptationtargets import router as adaptations_router_v1
