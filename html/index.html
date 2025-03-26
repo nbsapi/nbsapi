@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NBSAPI is an open API enabling interoperability for Nature-Based Solutions technology, supporting environmental sustainability and data integration.">
     <title>NBSAPI - Nature-Based Solutions API</title>
     <link rel="stylesheet" href="static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="header">
@@ -12,69 +16,102 @@
             <img src="static/logo.png" alt="NBSAPI Logo" class="logo">
             <h1 class="title">NBSAPI</h1>
         </div>
-        <p class="subtitle">Common data exchange specification for Nature-Based Solutions technology</p>
+        <p class="subtitle">A standardized data exchange API for Nature-Based Solutions technology.</p>
     </header>
 
     <main class="content">
+        <section class="homepage-image">
+            <img src="static/images/nbsapi-overview.png" alt="Illustration of NBSAPI functionality" class="responsive-image">
+        </section>
+
         <section class="overview">
             <h2>What is NBSAPI?</h2>
-            <p>NBSAPI is an open API designed to enable interoperability among tools that facilitate nature-based solutions (NbS) for the built and natural environments. By standardizing data sharing mechanisms, NBSAPI helps developers and technology providers who are building applications to address environmental challenges such as:
-                <ul class="feature-list">
-                    <li>Flood mitigation</li>
-                    <li>Drought resilience</li>
-                    <li>Urban heat reduction</li>
-                    <li>Groundwater management</li>
-                </ul>
-                <br>
-            With NBSAPI, tool developers can exchange data with other services and applications, fostering collaboration and innovation in environmental and urban resilience projects.</p>
-        </section>
-
-        <section class="features">
-            <h2>Why Use it for your project?</h2>
+            <p>NBSAPI is an open API that facilitates interoperability among tools designed for nature-based solutions (NbS) in urban and natural environments. It enables standardized data exchange for various environmental challenges:</p>
             <ul class="feature-list">
-                <li><strong>Standardized Data Sharing:</strong> Share data in a consistent format to ensure interoperability.</li>
-                <li><strong>Adaptation Targets Tracking:</strong> Query and monitor adaptation targets across various domains.</li>
-                <li><strong>Customizable Access Controls:</strong> Utilize JWT-based authentication to protect sensitive data: you choose who and how NbS data is accessed.</li>
-                <li><strong>Seamless Integration:</strong> Compatible with FastAPI and other modern frameworks.</li>
-                <li><strong>Flexible Filters:</strong> Retrieve data using bounding boxes, adaptation targets, and more.</li>
+                <li>Flood mitigation</li>
+                <li>Drought resilience</li>
+                <li>Urban heat reduction</li>
+                <li>Groundwater management</li>
             </ul>
         </section>
 
+
+        <section class="homepage-image">
+            <img src="static/images/nbsapi-header.png" alt="Schematic of NBSAPI Vision" class="responsive-image">
+        </section>
         <section class="features">
-            <h2>Key Features</h2>
-            <p>NBSAPI provides a community and specification to enable future interoperability</p>
+            <h2>Why Choose NBSAPI?</h2>
             <ul class="feature-list">
-                <li>Compatible with your application / tech framework, easy to implement and understand</li>
-                <li>Real-time adaptation target tracking across different tools</li>
-                <li>Flexible filtering and query options for data queries</li>
-                <li>Easy integration with FastAPI and other frameworks</li>
+                <li><strong>Standardized Data Sharing:</strong> Ensures seamless interoperability between different applications and facilitates a smooth exchange of environmental data.</li>
+                <li><strong>Adaptation Targets Tracking:</strong> Gain insights into environmental adaptation goals, track their progress, and analyze trends in nature-based solutions.</li>
+                <li><strong>Customizable Security:</strong> Keep sensitive environmental data protected with JWT-based authentication and customizable access controls.</li>
+                <li><strong>Seamless Integration:</strong> Works effortlessly with FastAPI and other modern web frameworks, making it easy to integrate into your existing projects.</li>
+                <li><strong>Advanced Query Options:</strong> Use geospatial filters, adaptation targets, and bounding boxes to retrieve precise and relevant environmental data efficiently.</li>
             </ul>
         </section>
-
         <section class="documentation">
-            <h2>API Documentation</h2>
-            <p>Access the full documentation and start integrating NBSAPI into your projects:</p>
-            <a href="/docs" class="btn">Review OpenAPI Document</a>
+            <h2>Explore the API</h2>
+            <p>Access the full API documentation and start integrating NBSAPI into your projects today.</p>
+            <a href="/docs" class="btn">View API Documentation &rarr;</a>
         </section>
 
+        <section class="key-features">
+            <h2>Key Features</h2>
+            <p>NBSAPI provides essential functionalities to ensure interoperability and efficient data sharing within the nature-based solutions ecosystem.</p>
+            <div class="container">
+                <div class="card">
+                    <img src="static/images/features/features-api.png" alt="API Compatibility">
+                    <p><strong>Seamless API Integration:</strong> Easily implement and integrate with various frameworks and platforms, ensuring compatibility across different ecosystems.</p>
+                </div>
+                <div class="card">
+                    <img src="static/images/features/features-tracking.png" alt="Tracking">
+                    <p><strong>Real-time Adaptation Tracking:</strong> Monitor adaptation targets in real-time, enabling better planning and impact assessment of environmental interventions.</p>
+                </div>
+                <div class="card">
+                    <img src="static/images/features/features-filter.png" alt="Data Filtering">
+                    <p><strong>Flexible Data Querying:</strong> Retrieve data efficiently with advanced filtering options, including spatial queries, adaptation targets, and time-based filters.</p>
+                </div>
+                <div class="card">
+                    <img src="static/images/features/features-security.png" alt="Secure Data Exchange">
+                    <p><strong>Robust Security and Access Control:</strong> Protect your data with industry-standard security measures, ensuring safe and controlled access.</p>
+                </div>
+            </div>
+        </section>
+
+        
         <section class="faq">
-            <h2>FAQ</h2>
-            <p>Below is a list of frequently asked questions around NBSAPI. Still have others? Contact us! (coming shortly)</p>
-            <br>
-            <h4>Q1. I build tools for Nature based solution, what are the benefits for me to adopt the API?</h4>
-            <p>Access the full documentation and start integrating NBSAPI into your projects</p>
-            <h4>Q2. How do I contribute to the API?</h4>
-            <p>Access the full documentation and start integrating NBSAPI into your projects</p>
-            <h4>Q3. I am planning to build a application to help with Nature based solutions, how to get started fast with the reference application?</h4>
-            <p>Access the full documentation and start integrating NBSAPI into your projects</p>
-            <h4>Q4. How do I contribute?</h4>
-            <p>Reach out via our documentation or join our community to help improve and expand NBSAPI.</p>
-            <h4>Q5. Who is building / maintaining NBSAPI?</h4>
-            <p>NBSAPI is a project maintained by <a href="https://www.geodesignhub.com">Geodesignhub</a> and initially funded as a part of the <a href="https://www.nbsinfra.eu">NBSINFRA</a> project funded by the European Union.</p>
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>Who benefits from using NBSAPI?</h3>
+                <p>NBSAPI is designed for developers, researchers, city planners, and organizations working on Nature-Based Solutions (NbS). If your projects involve environmental monitoring, climate adaptation, or data exchange between multiple tools, NBSAPI ensures a standardized, interoperable approach.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How do I contribute?</h3>
+                <p>We encourage open collaboration! You can contribute by suggesting new features, reporting issues, improving documentation, or submitting code enhancements. Visit our GitHub repository for guidelines and ways to get involved.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Is there a reference implementation?</h3>
+                <p>Yes! To help developers get started quickly, we provide a reference implementation that includes sample code, API endpoints, and integration guides. This makes adoption straightforward and speeds up project development.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Who maintains NBSAPI?</h3>
+                <p>NBSAPI is actively maintained by <a href="https://www.geodesignhub.com">Geodesignhub</a> and was initially developed as part of the <a href="https://www.nbsinfra.eu">NBSINFRA</a> project funded by the European Union. The project continues to evolve with contributions from the open-source community.</p>
+            </div>
+        </section>
+
+        <section class="github">
+            <h2>Contribute on GitHub</h2>
+            <img src="static/images/github-mark.png" alt="GitHub Logo" class="github-logo">
+            <p>Join the NBSAPI community on GitHub to contribute, report issues, and collaborate on the development of the API.</p>
+            <a href="https://www.github.com/nbsapi/nbsapi" class="btn">API codebase</a>
+            <a href="https://www.github.com/nbsapi/nbsapi_verifier" class="btn">API Verification</a>
         </section>
     </main>
+
     <footer class="footer">
-        <p>&copy; 2024 nbsapi.org All rights reserved.</p>
+        
+        <img src="static/logo.png" alt="NBSAPI Footer Logo" class="logo-footer">
+        <p>&copy; 2024 nbsapi.org - All rights reserved.</p>
     </footer>
 </body>
 </html>
