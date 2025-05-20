@@ -1,14 +1,14 @@
 # NBSAPI v2 Documentation
 
-This document provides an overview of the NBSAPI v2, an API for interoperability between digital tools that help build and manage nature-based solutions (NBS) in the built and natural environment.
+This document provides an overview of the NBSAPI v2, an API for interoperability between digital tools that help build and manage nature-based solutions (NbS) in the built and natural environment.
 
 ## Overview
 
-The NBSAPI v2 extends the core concepts of v1 with richer data models, GeoJSON support, and project-level organization. It's designed to support complex NBS tools and integrations with specialized environmental metrics.
+The NBSAPI v2 extends the core concepts of v1 with richer data models, GeoJSON support, and project-level organization. It's designed to support complex NbS tools and integrations with specialized environmental metrics.
 
 ## Key Features of v2
 
-- **Full GeoJSON Support**: Define the geometry of solutions using standardized GeoJSON
+- **Full GeoJSON Support**: Define the geometry of solutions using GeoJSON
 - **Specialized Impact Metrics**: Detailed impact measurements for climate, water quality, and costs
 - **Physical Properties**: Define physical dimensions of solutions
 - **Project Management**: Group solutions into projects with targets and settings
@@ -18,7 +18,7 @@ The NBSAPI v2 extends the core concepts of v1 with richer data models, GeoJSON s
 
 ### Nature-Based Solutions
 
-Nature-based solutions (NBS) are the central concept of the API. They represent interventions that are inspired and supported by nature, providing environmental, social, and economic benefits.
+Nature-based solutions (NbS) are the central concept of the API. They represent interventions that are inspired and supported by nature, providing environmental, social, and economic benefits.
 
 In v2, NBS objects are enhanced with:
 - GeoJSON geometry
