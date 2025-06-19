@@ -102,7 +102,7 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["F", "E", "W", "N", "D4", "UP", "PL", "TRY", "PERF", "FURB", "RUF", "S", "DTZ"]
-ignore = ["ANN001", "ANN003", "ANN202", "ANN201", "DOC201", "E501", "PLR0904", "PLR0913", "PLR0917", "SLF001", "FIX002", "D400", "D415"]
+ignore = ["ANN001", "ANN003", "ANN202", "ANN201", "DOC201", "E501", "PLR0904", "PLR0913", "PLR0917", "SLF001", "FIX002", "D400", "D415", "PLR2004", "S101", "N815"]
 fixable = ["ALL"]
 unfixable = []
 

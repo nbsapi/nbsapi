@@ -1,5 +1,4 @@
 # from nbsapi.api.dependencies.auth import validate_is_authenticated
-from typing import List
 
 from fastapi import APIRouter, Depends
 
@@ -21,14 +20,14 @@ router = APIRouter(
 )
 
 
-@router.get("/impacts", response_model=List[ImpactBase])
+@router.get("/impacts", response_model=list[ImpactBase])
 async def read_impacts(db_session: DBSessionDep):
     """Retrieve all available adaptation impacts"""
     targets = await get_impacts(db_session)
     return targets
 
 
-@router.get("/impact_intensities", response_model=List[ImpactIntensity])
+@router.get("/impact_intensities", response_model=list[ImpactIntensity])
 async def read_impact_intensity(db_session: DBSessionDep):
     """Retrieve all available adaptation impact intensities"""
     targets = await get_impact_intensities(db_session)
@@ -46,7 +45,7 @@ async def write_impact_intensity(db_session: DBSessionDep, intensity: ImpactInte
     return targets
 
 
-@router.get("/impact_units", response_model=List[ImpactUnit])
+@router.get("/impact_units", response_model=list[ImpactUnit])
 async def read_impact_unit(db_session: DBSessionDep):
     """Retrieve all available adaptation impact units"""
     target = await get_impact_units(db_session)

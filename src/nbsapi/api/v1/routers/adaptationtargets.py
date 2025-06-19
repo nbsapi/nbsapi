@@ -1,5 +1,4 @@
 # from nbsapi.api.dependencies.auth import validate_is_authenticated
-from typing import List
 
 from fastapi import APIRouter, Depends
 
@@ -15,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.get("/adaptation_target", response_model=List[TargetBase])
+@router.get("/adaptation_target", response_model=list[TargetBase])
 async def read_targets(db_session: DBSessionDep):
     """Retrieve all available adaptation targets"""
     targets = await get_targets(db_session)

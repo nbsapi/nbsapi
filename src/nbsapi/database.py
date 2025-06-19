@@ -1,5 +1,6 @@
 import contextlib
-from typing import Any, AsyncIterator
+from typing import Any
+from collections.abc import AsyncIterator
 from urllib.parse import urlparse
 
 from sqlalchemy.ext.asyncio import (
@@ -48,7 +49,7 @@ class DatabaseSessionManager:
 
     async def close(self):
         if self._engine is None:
-            raise Exception("DatabaseSessionManager is not initialized")
+            raise Exception("DatabaseSessionManager is not initialized")  # noqa: TRY002
         await self._engine.dispose()
 
         self._engine = None
@@ -57,7 +58,7 @@ class DatabaseSessionManager:
     @contextlib.asynccontextmanager
     async def connect(self) -> AsyncIterator[AsyncConnection]:
         if self._engine is None:
-            raise Exception("DatabaseSessionManager is not initialized")
+            raise Exception("DatabaseSessionManager is not initialized")  # noqa: TRY002
 
         async with self._engine.begin() as connection:
             try:
@@ -69,7 +70,7 @@ class DatabaseSessionManager:
     @contextlib.asynccontextmanager
     async def session(self) -> AsyncIterator[AsyncSession]:
         if self._sessionmaker is None:
-            raise Exception("DatabaseSessionManager is not initialized")
+            raise Exception("DatabaseSessionManager is not initialized")  # noqa: TRY002
 
         session = self._sessionmaker()
         try:
