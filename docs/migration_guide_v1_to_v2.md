@@ -35,7 +35,37 @@ GET /api/version
 
 ## Key Changes in v2
 
-### 1. GeoJSON Support
+### 1. Deltares API Compatibility
+
+The v2 API introduces full compatibility with the Deltares API format, enabling seamless data exchange with Deltares climate adaptation tools:
+
+#### New in v2:
+- Deltares export format (`/export/deltares` endpoint)
+- Measure type system for predefined solution categories
+- Automatic field name conversion (snake_case ↔ camelCase)
+- Impact data flattening for Deltares apiData structure
+
+#### Migration Example:
+```javascript
+// v2 - Export project in Deltares format
+const response = await fetch('/v2/api/projects/proj-123/export/deltares');
+const deltares_project = await response.json();
+// Returns Deltares-compatible GeoJSON with all areas, settings, and targets
+
+// v2 - Work with measure types
+const measure_types = await fetch('/v2/api/measure_types');
+console.log(measure_types);  // List of predefined solution types
+
+// Create solution with measure type
+const new_solution = {
+  name: "Rain Garden",
+  measure_id: "26",  // References a predefined measure type
+  geometry: {...},
+  ...
+};
+```
+
+### 2. GeoJSON Support
 
 The v2 API fully supports GeoJSON for geospatial data:
 
@@ -145,6 +175,8 @@ console.log(project.id);  // Project ID for future reference
 | `/v2/api/projects` | Project management endpoints |
 | `/v2/api/projects/{id}/solutions/{solution_id}` | Add/remove solutions from projects |
 | `/v2/api/projects/import` and `/export` | Import/export project data |
+| `/v2/api/projects/{id}/export/deltares` | Export project in Deltares format |
+| `/v2/api/measure_types` | Manage predefined solution types |
 
 ### Modified v2 Endpoints
 
@@ -182,14 +214,8 @@ The v1 API will remain available for a transition period, but we recommend migra
 3. Consider using the new Project endpoints for organizing your solutions
 4. Take advantage of the specialized impact types for more detailed metrics
 5. Use GeoJSON for all geospatial data
+6. Integrate measure types for consistent solution categorization
+7. Utilize Deltares export for compatibility with Deltares tools
 
-## Need Help?
-
-If you need assistance with migration, please:
-- Check the API reference documentation
-- Join our community forum
-- Contact support at support@nbsapi.org
-
----
 
 This is a living document and will be updated as the API evolves. Last updated: May 2025.

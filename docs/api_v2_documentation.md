@@ -12,6 +12,8 @@ The NBSAPI v2 extends the core concepts of v1 with richer data models, GeoJSON s
 - **Specialized Impact Metrics**: Detailed impact measurements for climate, water quality, and costs
 - **Physical Properties**: Define physical dimensions of solutions
 - **Project Management**: Group solutions into projects with targets and settings
+- **Deltares Compatibility**: Full compatibility with Deltares API format for seamless data exchange
+- **Measure Type System**: Predefined solution types with default properties
 - **API Versioning**: Explicit versioning through paths and headers
 
 ## Core Concepts
@@ -25,6 +27,8 @@ In v2, NBS objects are enhanced with:
 - Visual styling properties
 - Physical dimensions
 - Specialized impact metrics
+- Measure type references
+- Calculated area and length properties
 
 Example NBS object:
 ```json
@@ -48,8 +52,28 @@ Example NBS object:
     "default_depth": 1.0
   },
   "area": 500,
+  "length": 250,
+  "measure_id": "15",
   "adaptations": [...],
   "impacts": [...]
+}
+```
+
+### Measure Types
+
+Measure types are predefined solution categories that provide default properties and configurations for NBS solutions. They enable consistent classification and provide default values for physical properties.
+
+Example measure type:
+```json
+{
+  "id": "39",
+  "name": "Green Roof",
+  "description": "Vegetated roof system for stormwater management",
+  "default_color": "#31D336",
+  "default_inflow": 1.0,
+  "default_depth": 0.05,
+  "default_width": 5.0,
+  "default_radius": 1.0
 }
 ```
 
@@ -107,6 +131,46 @@ Projects are new in v2 and allow grouping multiple NBS solutions with common set
 }
 ```
 
+## Deltares API Compatibility
+
+The NBSAPI v2 is designed with full compatibility with the Deltares API format, enabling seamless data exchange with Deltares climate adaptation tools and other systems using the Deltares standard.
+
+### Key Compatibility Features
+
+- **Deltares Export Format**: Export projects in Deltares-compatible GeoJSON format
+- **Field Name Mapping**: Automatic conversion between snake_case (API) and camelCase (Deltares)
+- **Impact Data Flattening**: Convert specialized impacts to Deltares apiData structure
+- **Measure Type Integration**: Support for Deltares measure type system
+- **Project Settings**: Compatible project configuration and targets
+
+### Export Example
+
+Export a project in Deltares format:
+```
+GET /v2/api/projects/{id}/export/deltares
+```
+
+This returns a complete Deltares-compatible project with:
+- All NBS areas as GeoJSON Features
+- Project settings in Deltares format (scenarioName, capacity, etc.)
+- Targets with camelCase field names
+- Map configuration and measure overrides
+
+### Field Mapping
+
+The API automatically converts field names between formats:
+
+| API v2 (snake_case) | Deltares (camelCase) |
+|---------------------|---------------------|
+| temp_reduction      | tempReduction       |
+| construction_cost   | constructionCost    |
+| maintenance_cost    | maintenanceCost     |
+| cool_spot          | coolSpot            |
+| capture_unit       | captureUnit         |
+| filtering_unit     | filteringUnit       |
+| settling_unit      | settlingUnit        |
+| storage_capacity   | storageCapacity     |
+
 ## API Endpoints
 
 ### Nature-Based Solutions
@@ -137,6 +201,15 @@ Projects are new in v2 and allow grouping multiple NBS solutions with common set
 - `DELETE /v2/api/projects/{id}/solutions/{solution_id}`: Remove solution from project
 - `POST /v2/api/projects/import`: Import a project
 - `GET /v2/api/projects/{id}/export`: Export a project
+- `GET /v2/api/projects/{id}/export/deltares`: Export a project in Deltares format
+
+### Measure Types
+
+- `GET /v2/api/measure_types`: List all measure types
+- `GET /v2/api/measure_types/{id}`: Get a specific measure type
+- `POST /v2/api/measure_types`: Create a new measure type
+- `PATCH /v2/api/measure_types/{id}`: Update a measure type
+- `DELETE /v2/api/measure_types/{id}`: Delete a measure type
 
 ## API Versioning
 
@@ -187,9 +260,3 @@ Example GeoJSON response for a solution:
 ## Further Documentation
 
 - [Migration Guide](migration_guide_v1_to_v2.md): Guide for migrating from v1 to v2
-- [API Reference](api_reference_v2.md): Detailed API reference
-- [Examples](examples_v2.md): Code examples for common tasks
-
-## Support
-
-If you need assistance, please contact support@nbsapi.org
