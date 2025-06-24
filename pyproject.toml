@@ -42,7 +42,7 @@ dependencies = [
 [project.optional-dependencies]
 test = [
     "pytest>=7.0.0",
-    "tavern>=2.11.0",
+    "tavern>=2.15.0",
 ]
 
 [project.scripts]
@@ -64,7 +64,11 @@ markers = [
 ]
 filterwarnings = [
     "ignore:cannot collect test class 'TestType' because it has a __init__ constructor",
-    "ignore:Can't validate argument 'spatial_index'; can't locate any SQLAlchemy dialect named 'spatial'"
+    "ignore:Can't validate argument 'spatial_index'; can't locate any SQLAlchemy dialect named 'spatial'",
+    "ignore:ast.Str is deprecated and will be removed in Python 3.14; use ast.Constant instead:DeprecationWarning",
+    "ignore:ast.Num is deprecated and will be removed in Python 3.14; use ast.Constant instead:DeprecationWarning",
+    "ignore:ast.NameConstant is deprecated and will be removed in Python 3.14; use ast.Constant instead:DeprecationWarning",
+    "ignore:Attribute s is deprecated and will be removed in Python 3.14; use value instead:DeprecationWarning"
 ]
 
 [tool.hatch.build.targets.wheel]
