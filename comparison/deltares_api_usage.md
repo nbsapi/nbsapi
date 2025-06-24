@@ -6,6 +6,83 @@ This guide demonstrates how to create and retrieve nature-based solution resourc
 
 The Deltares format includes various types of nature-based solutions with different geometries (Point, LineString, Polygon) and physical properties. Each solution has specific measures, styling, and impact data.
 
+## Key Architectural Changes in v2
+
+### ❌ Deprecated: Adaptation Targets (v1 approach)
+```json
+{
+  "adaptations": [
+    {"adaptation": {"type": "Heat"}, "value": 80},
+    {"adaptation": {"type": "Pluvial Flooding"}, "value": 20}
+  ]
+}
+```
+
+### ✅ New: Specialized Impacts (v2 Deltares-compatible approach)
+```json
+{
+  "impacts": [
+    {
+      "magnitude": 142.34,
+      "unit": {"unit": "m3", "description": "storage capacity"},
+      "intensity": {"intensity": "high"},
+      "specialized": {
+        "climate": {
+          "temp_reduction": 0.057,
+          "storage_capacity": 142.34,
+          "evapotranspiration": 0.041
+        }
+      }
+    }
+  ]
+}
+```
+
+### ✅ New: Project-Level Targets
+```json
+{
+  "targets": {
+    "climate": {
+      "storage_capacity": {"include": true, "value": "1400"},
+      "temp_reduction": {"include": true, "value": "0"}
+    },
+    "water_quality": {
+      "filtering_unit": {"include": true, "value": "100"}
+    }
+  }
+}
+```
+
+**Why this change?**
+- **Quantitative vs Qualitative**: Specialized impacts provide measurable values rather than abstract scores
+- **Deltares Compatibility**: Matches the Deltares data format exactly
+- **Better Organization**: Separates solution-level impacts from project-level targets
+- **Extensibility**: Easier to add new impact categories without schema changes
+
+### Migration Guide: v1 → v2
+
+| v1 Concept | v2 Replacement | Example |
+|------------|----------------|---------|
+| `adaptations: [{"type": "Heat", "value": 80}]` | **Specialized Climate Impact**: `{"climate": {"temp_reduction": 1.5}}` | Quantified temperature reduction |
+| `adaptations: [{"type": "Flooding", "value": 60}]` | **Specialized Climate Impact**: `{"climate": {"storage_capacity": 500}}` | Actual storage capacity |
+| Solution-level adaptation targets | **Project-level targets**: `{"targets": {"climate": {"temp_reduction": {"value": "2.0"}}}}` | Project-wide performance goals |
+| Abstract scoring (0-100) | **Measurable units**: `{"unit": "m3", "magnitude": 142.34}` | Real-world measurements |
+
+### Key Architectural Improvements
+
+1. **Two-Level System**:
+   - **Solution Level**: Specialized impacts with quantitative measurements
+   - **Project Level**: Performance targets and goals
+
+2. **Deltares Compatibility**: 
+   - Direct mapping from Deltares `apiData` to specialized impacts
+   - Project settings and targets from Deltares project structure
+
+3. **Enhanced Measurement**:
+   - Units and magnitudes for all metrics
+   - Currency support for cost impacts
+   - Negative values for losses (e.g., groundwater depletion)
+
 ## Language-Agnostic API Guide
 
 This section provides examples using HTTP requests that can be implemented in any programming language.
