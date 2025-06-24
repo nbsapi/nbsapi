@@ -77,11 +77,94 @@ Example measure type:
 }
 ```
 
-### Enhanced Impacts
+### Enhanced Impacts Architecture
 
-In v2, impacts can include specialized metrics for different categories:
+V2 introduces a **dual-layer impact system** that extends v1's basic impacts with specialized domain-specific metrics:
+
+#### Dual-Layer Architecture
+
+**Basic Layer (preserved from v1):**
+- Fundamental impact data: magnitude, unit, intensity
+- Used for general-purpose display and backward compatibility
+- Suitable for simple dashboards and lightweight integrations
+
+**Specialized Layer (new in v2):**
+- Domain-specific metrics for detailed scientific analysis
+- Categories: climate, water quality, and cost impacts
+- Used for climate modeling, Deltares integration, and advanced analytics
+
+#### Why Both Layers?
+
+1. **Backward Compatibility**: Existing V1 integrations continue to work without changes
+2. **Progressive Enhancement**: Systems can adopt specialized impacts incrementally
+3. **Use Case Differentiation**: Different tools need different levels of detail
+4. **Flexibility**: A single impact can serve both simple visualization and complex modeling needs
+
+#### Complete Impact Example
 
 ```json
+{
+  "magnitude": 142.34,
+  "unit": {"unit": "m3", "description": "storage capacity"},
+  "intensity": {"intensity": "high"},
+  "specialized": {
+    "climate": {
+      "temp_reduction": 1.5,
+      "cool_spot": 0,
+      "evapotranspiration": 0.041,
+      "groundwater_recharge": -0.043,
+      "storage_capacity": 142.34
+    },
+    "water_quality": {
+      "capture_unit": -0.283,
+      "filtering_unit": 1.820,
+      "settling_unit": 1.840
+    },
+    "cost": {
+      "construction_cost": 58381.40,
+      "maintenance_cost": 245.20,
+      "currency": "EUR"
+    }
+  }
+}
+```
+
+#### Impact Categories
+
+**Climate Impacts:**
+- `temp_reduction`: Temperature reduction in degrees Celsius
+- `cool_spot`: Cool spot indicator (0 or 1)
+- `evapotranspiration`: Evapotranspiration rate in mm/day
+- `groundwater_recharge`: Groundwater recharge rate in mm/day (negative = loss)
+- `storage_capacity`: Water storage capacity in cubic meters
+
+**Water Quality Impacts:**
+- `capture_unit`: Pollutant capture efficiency
+- `filtering_unit`: Water filtration effectiveness
+- `settling_unit`: Sedimentation effectiveness
+
+**Cost Impacts:**
+- `construction_cost`: Construction cost in currency units
+- `maintenance_cost`: Annual maintenance cost
+- `currency`: Currency code (EUR, USD, etc.)
+
+#### Migration Strategy
+
+**From V1 to V2:**
+- Keep existing basic impacts for compatibility
+- Add specialized impacts for enhanced functionality
+- Systems can choose their level of detail
+
+**Example Evolution:**
+```json
+// V1 Basic Impact (still supported in V2)
+{
+  "magnitude": 10.5,
+  "unit": {"unit": "m2", "description": "shade"},
+  "intensity": {"intensity": "medium"}
+}
+
+// V2 Enhanced Impact (adds specialized data)
 {
   "magnitude": 10.5,
   "unit": {"unit": "m2", "description": "shade"},
@@ -89,14 +172,7 @@ In v2, impacts can include specialized metrics for different categories:
   "specialized": {
     "climate": {
       "temp_reduction": 2.5,
-      "evapotranspiration": 20.0
-    },
-    "water_quality": {
-      "filtering_unit": 45.0
-    },
-    "cost": {
-      "construction_cost": 5000,
-      "maintenance_cost": 500
+      "storage_capacity": 10.5
     }
   }
 }

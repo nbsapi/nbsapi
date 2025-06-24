@@ -58,6 +58,8 @@ The Deltares format includes various types of nature-based solutions with differ
 - **Deltares Compatibility**: Matches the Deltares data format exactly
 - **Better Organization**: Separates solution-level impacts from project-level targets
 - **Extensibility**: Easier to add new impact categories without schema changes
+- **Dual-Layer Architecture**: Basic impacts remain for backward compatibility and simple use cases, while specialized impacts serve advanced analysis needs
+- **Progressive Enhancement**: Systems can adopt specialized impacts incrementally without breaking existing integrations
 
 ### Migration Guide: v1 → v2
 
@@ -70,18 +72,29 @@ The Deltares format includes various types of nature-based solutions with differ
 
 ### Key Architectural Improvements
 
-1. **Two-Level System**:
-   - **Solution Level**: Specialized impacts with quantitative measurements
-   - **Project Level**: Performance targets and goals
+1. **Dual-Layer Impact System**:
+   - **Basic Layer**: Fundamental impact data (magnitude, unit, intensity) for general use
+   - **Specialized Layer**: Domain-specific metrics for detailed analysis
+   - **Both layers coexist**: A single impact can have both basic and specialized data
 
-2. **Deltares Compatibility**: 
+2. **Two-Level Organization**:
+   - **Solution Level**: Individual solution impacts (both basic and specialized)
+   - **Project Level**: Aggregated performance targets and goals
+
+3. **Deltares Compatibility**: 
    - Direct mapping from Deltares `apiData` to specialized impacts
    - Project settings and targets from Deltares project structure
+   - Round-trip compatibility (API ↔ Deltares ↔ API)
 
-3. **Enhanced Measurement**:
+4. **Enhanced Measurement**:
    - Units and magnitudes for all metrics
    - Currency support for cost impacts
    - Negative values for losses (e.g., groundwater depletion)
+
+5. **Compatibility Strategy**:
+   - **Backward Compatible**: V1 basic impacts continue to work
+   - **Forward Compatible**: New systems can use specialized impacts
+   - **Incremental Adoption**: Systems can enhance gradually without breaking changes
 
 ## Language-Agnostic API Guide
 

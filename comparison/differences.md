@@ -44,13 +44,39 @@ This document outlines the major differences between V1 and V2 APIs for retrievi
 - Limited to general impact categories
 
 ### V2
-- Enhanced `EnhancedImpactBase` with specialized impact categories
+- **Dual-Layer Approach**: Extends V1's basic impacts with specialized categories
+- Enhanced `EnhancedImpactBase` that **includes** basic impact structure **plus** specialized impact categories
 - Dedicated impact endpoints: `/v2/api/impacts/solutions/{solution_id}/impacts`
 - Specialized impact types:
   - `ClimateImpact` (temperature reduction, evapotranspiration, storage capacity)
   - `WaterQualityImpact` (capture, filtering, settling units)
   - `CostImpact` (construction/maintenance costs with currency)
 - Individual impact retrieval: `/v2/api/impacts/impacts/{impact_id}`
+
+### Why Both Basic AND Specialized Impacts?
+
+**Complementary Design**: V2 doesn't replace basic impacts—it enhances them:
+
+1. **Basic Impacts (Preserved)**: Provide fundamental "what" information
+   - Magnitude, unit, intensity for general-purpose display
+   - Simple calculations and visualization
+   - Backward compatibility with V1 systems
+
+2. **Specialized Impacts (Added)**: Provide detailed "how" information
+   - Domain-specific measurable parameters
+   - Climate modeling integration
+   - Deltares compatibility
+   - Scientific analysis requirements
+
+**Use Case Differentiation**:
+- **Basic impacts**: Simple dashboards, general reporting, lightweight integrations
+- **Specialized impacts**: Climate models, cost analysis tools, water quality assessment, Deltares systems
+
+**Example**: A solution can have both:
+- Basic impact: "10.5 m² of shade at low intensity" (for general display)
+- Specialized climate impact: "1.5°C temperature reduction with 142.34 m³ storage capacity" (for climate modeling)
+
+This layered approach allows V2 to serve both simple visualization tools and sophisticated scientific systems without forcing all users to adopt complex specialized formats immediately.
 
 ### V2 Advantages
 1. **Output Formats**: V2 supports both JSON and GeoJSON output formats, while V1 only supports JSON
