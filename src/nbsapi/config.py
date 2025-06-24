@@ -6,8 +6,8 @@ class Settings(BaseSettings):
     echo_sql: bool = False
     test: bool = False
     project_name: str = "nbsapi"
-    oauth_token_secret: str = "secret"
-    contact_website:str = "https://community.nbsapi.org"
+    oauth_token_secret: str = "secret"  # noqa: S105
+    contact_website: str = "https://community.nbsapi.org"
     model_config = SettingsConfigDict(env_file=".env")
     # env vars will always override settings from .env
 
