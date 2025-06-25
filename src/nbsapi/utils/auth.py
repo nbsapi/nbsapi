@@ -16,7 +16,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 
 ACCESS_TOKEN_SECRET_KEY = settings.oauth_token_secret
-ACCESS_TOKEN_ALGORITHM = "HS256"
+ACCESS_TOKEN_ALGORITHM = "HS256"  # noqa: S105
 
 
 def get_password_hash(password: str) -> str:

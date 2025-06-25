@@ -1,6 +1,5 @@
 # from nbsapi.api.dependencies.auth import validate_is_authenticated
 
-from typing import List, Optional
 
 from fastapi import APIRouter, Body, Depends
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -46,13 +45,13 @@ class SolutionRequest(BaseModel):
             ]
         }
     )
-    targets: Optional[List["AdaptationTargetRead"]] = Body(
+    targets: list["AdaptationTargetRead"] | None = Body(
         None, description="List of adaptation targets to filter by"
     )
-    intensities: Optional[List["ImpactIntensity"]] = Body(
+    intensities: list["ImpactIntensity"] | None = Body(
         None, description="List of impact intensities to filter by"
     )
-    bbox: Optional[List[float]] = Field(
+    bbox: list[float] | None = Field(
         None,
         description="Bounding box specified as [west, south, east, north]. The list should contain exactly four float values. Max 1 sq km",
         min_length=4,
@@ -60,7 +59,7 @@ class SolutionRequest(BaseModel):
     )
 
     @model_validator(mode="before")
-    def check_bbox(cls, values):
+    def check_bbox(self, values):
         bbox = values.get("bbox")
         if bbox:
             if len(bbox) != 4:
@@ -83,11 +82,11 @@ class SolutionRequest(BaseModel):
 # Route definition
 @router.post(
     "/solutions",
-    response_model=List[NatureBasedSolutionRead],
+    response_model=list[NatureBasedSolutionRead],
 )
 async def get_solutions(
     db_session: DBSessionDep,
-    request_body: Optional[SolutionRequest] = Body(None),
+    request_body: SolutionRequest | None = Body(None),
 ):
     """
     Return a list of nature-based solutions using _optional_ filter criteria:

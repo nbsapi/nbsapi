@@ -1,5 +1,4 @@
 import asyncio
-import os
 from logging.config import fileConfig
 
 from geoalchemy2 import alembic_helpers

@@ -102,9 +102,16 @@ def cli(spec: str, output: str):
     Path(output).mkdir(exist_ok=True)
     click.echo(f"\nGenerating tests to output path {output}")
 
+    skipped_deletes = []
+
     # Generate tests for each path
     for path, methods in spec_data["paths"].items():
         for method, details in methods.items():
+            # Skip DELETE endpoints to avoid data destruction in conformance tests
+            if method.upper() == "DELETE":
+                operation_id = details.get("operationId", f"{method.upper()} {path}")
+                skipped_deletes.append(f"  - {operation_id}")
+                continue
             # Debug logging
             operation_id = details.get("operationId", "")
             click.echo(f"\nProcessing endpoint: {method.upper()} {path}")
@@ -183,6 +190,23 @@ def cli(spec: str, output: str):
             # Write test file
             output_path = Path(output) / f"test_{test_name}.tavern.yaml"
             save_yaml(test, output_path)
+
+    # Print warning about skipped DELETE endpoints
+    if skipped_deletes:
+        click.echo(
+            "\n" + "=" * 70 + "\n"
+            "⚠️  WARNING: DELETE endpoints were skipped during test generation\n"
+            "=" * 70 + "\n"
+            "The following DELETE endpoints were not included in the conformance tests\n"
+            "to prevent data destruction when running tests against production databases:\n"
+        )
+        for skipped in skipped_deletes:
+            click.echo(skipped)
+        click.echo(
+            "\nDELETE operations should be tested separately in isolated environments\n"
+            "where data destruction is acceptable.\n"
+            "=" * 70
+        )
 
     click.echo("\nTest generation complete!")
 

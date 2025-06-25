@@ -25,7 +25,7 @@ async def get_current_user(
             raise credentials_exception
         permissions = payload.get("permissions", "")
         token_data = TokenData(email=email, permissions=permissions)
-    except PyJWTError as e:
+    except PyJWTError:
         raise credentials_exception
     user = await get_user_by_username(db_session, token_data.email)
     if user is None:
