@@ -43,7 +43,7 @@ def create_docs_router() -> APIRouter:
     async def get_default_docs(request: Request):
         return get_swagger_ui_html(
             openapi_url="/v2/openapi.json",
-            title=f"{settings.project_name} API (v2) - Click 'Models' at the bottom for schema definitions",
+            title=f"{settings.project_name} API - Click 'Models' at the bottom for schema definitions",
             swagger_js_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.9.0/swagger-ui-bundle.js",
             swagger_css_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.9.0/swagger-ui.css",
             swagger_ui_parameters={
@@ -134,11 +134,7 @@ def create_docs_router() -> APIRouter:
 An API for interoperability between digital tools that help to build and manage
 nature-based solutions in the built and natural environment.
 
-> **Version Navigation:**
-> - Current: **v1 API** (basic functionality)
-> - <a href="/v2/docs">Switch to v2 API</a> (enhanced with GeoJSON and Projects)
->
-> The "Servers" dropdown shows the base URL for API requests.
+> **Note:** This is the v1 API documentation. The v2 API is available at <a href="/v2/docs">/v2/docs</a>.
 
 ### Key Concepts
 
@@ -191,16 +187,10 @@ For the enhanced v2 API with GeoJSON support, specialized impact types, and proj
             get_openapi(
                 title=f"{settings.project_name} API (v2)",
                 version="2.0.0",
-                description="""## NBSAPI v2
+                description="""## NBSAPI
 
 An API for interoperability between digital tools that help to build and 
 manage nature-based solutions, with Deltares format compatibility.
-
-> **Version Navigation:**
-> - <a href="/v1/docs">Switch to v1 API</a>
-> - Current: **v2 API** (includes GeoJSON and Projects)
-> 
-> The "Servers" dropdown shows the base URL for API requests.
 
 ### Key Concepts
 
