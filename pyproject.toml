@@ -17,7 +17,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Scientific/Engineering :: GIS"
     ]
-version = "0.1.0"
+version = "0.2.0"
 description = "An API for nature-based solutions"
 readme = "README.md"
 dependencies = [

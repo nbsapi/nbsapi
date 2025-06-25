@@ -186,22 +186,6 @@ console.log(project.id);  // Project ID for future reference
 | `/v1/api/solutions/{id}` | `/v2/api/solutions/{id}` | Enhanced with additional properties |
 | `/v1/api/impacts` | `/v2/api/impacts` | Enhanced with specialized impact types |
 
-## Client Library Updates
-
-If you're using client libraries to interact with the NBSAPI, you'll need to update them to v2. The basic structure is similar, but with enhanced capabilities:
-
-```javascript
-// v1 client library example
-import { NbsApiClient } from 'nbsapi-client';
-const client = new NbsApiClient('https://api.example.com');
-const solutions = await client.getSolutions();
-
-// v2 client library example
-import { NbsApiClient } from 'nbsapi-client';
-const client = new NbsApiClient('https://api.example.com', { version: 'v2' });
-const solutions = await client.getSolutions();
-const projects = await client.getProjects();  // New in v2
-```
 
 ## Backward Compatibility
 
@@ -218,4 +202,4 @@ The v1 API will remain available for a transition period, but we recommend migra
 7. Utilize Deltares export for compatibility with Deltares tools
 
 
-This is a living document and will be updated as the API evolves. Last updated: May 2025.
+This is a living document and will be updated as the API evolves. Last updated: June 2025.
